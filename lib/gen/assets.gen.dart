@@ -134,11 +134,11 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/bg_pattern_dark.svg
-  SvgGenImage get bgPatternDark => const SvgGenImage('assets/images/bg_pattern_dark.svg');
+  /// File path: assets/images/bg_pattern_dark.png
+  AssetGenImage get bgPatternDark => const AssetGenImage('assets/images/bg_pattern_dark.png');
 
-  /// File path: assets/images/bg_pattern_light.svg
-  SvgGenImage get bgPatternLight => const SvgGenImage('assets/images/bg_pattern_light.svg');
+  /// File path: assets/images/bg_pattern_light.png
+  AssetGenImage get bgPatternLight => const AssetGenImage('assets/images/bg_pattern_light.png');
 
   /// File path: assets/images/comunity.svg
   SvgGenImage get comunity => const SvgGenImage('assets/images/comunity.svg');
