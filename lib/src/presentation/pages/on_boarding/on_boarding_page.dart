@@ -1,5 +1,6 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
+import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/presentation/widgets/page_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -63,15 +64,10 @@ class OnBoardingPage extends StatelessWidget {
                             ),
                           ),
                           foregroundColor: ColorName.primary50),
-                      child: const Text(
-                        "Skip",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: ColorName.primary50,
-                        ),
-                      ),
+                      child: Text("Skip",
+                          textAlign: TextAlign.center,
+                          style: TextStyles.medium16
+                              .copyWith(color: ColorName.primary50)),
                     ),
                   ),
                   const SizedBox(
@@ -96,14 +92,11 @@ class OnBoardingPage extends StatelessWidget {
                             ),
                           ),
                           backgroundColor: ColorName.primary50),
-                      child: const Text(
+                      child: Text(
                         "Next",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: ColorName.white,
-                        ),
+                        style: TextStyles.medium16
+                            .copyWith(color: ColorName.white),
                       ),
                     ),
                   ),
@@ -149,11 +142,7 @@ class _PageItem extends StatelessWidget {
           ),
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: ColorName.neutral80,
-            ),
+            style: TextStyles.semiBold16.copyWith(color: ColorName.neutral80),
           ),
           const SizedBox(
             height: 12,
@@ -161,8 +150,7 @@ class _PageItem extends StatelessWidget {
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 14,
+            style: TextStyles.regular14.copyWith(
               color: ColorName.neutral80,
             ),
           ),
