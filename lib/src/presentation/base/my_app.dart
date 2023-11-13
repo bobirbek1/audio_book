@@ -4,8 +4,7 @@
 
 
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
-import 'package:audio_book/src/presentation/pages/splash/splash_page.dart';
+import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
         scaffoldBackgroundColor: ColorName.white,
       ),
-      home: const OnBoardingPage(),
+      home: const SignInPage(),
     );
   }
 }

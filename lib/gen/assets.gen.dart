@@ -56,6 +56,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/folder_outline.svg
   SvgGenImage get folderOutline => const SvgGenImage('assets/icons/folder_outline.svg');
 
+  /// File path: assets/icons/google_icon.svg
+  SvgGenImage get googleIcon => const SvgGenImage('assets/icons/google_icon.svg');
+
   /// File path: assets/icons/home_bold.svg
   SvgGenImage get homeBold => const SvgGenImage('assets/icons/home_bold.svg');
 
@@ -114,6 +117,7 @@ class $AssetsIconsGen {
         edit,
         folderBold,
         folderOutline,
+        googleIcon,
         homeBold,
         homeOutline,
         moreSquare,

@@ -142,7 +142,7 @@ class _PageItem extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyles.semiBold16.copyWith(color: ColorName.neutral80),
+            style: TextStyles.semiBold16,
           ),
           const SizedBox(
             height: 12,
