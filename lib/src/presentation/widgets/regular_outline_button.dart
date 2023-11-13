@@ -1,4 +1,5 @@
 import 'package:audio_book/gen/colors.gen.dart';
+import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class RegularOutlineButton extends StatelessWidget {
@@ -42,7 +43,7 @@ class RegularOutlineButton extends StatelessWidget {
       child: child ??
           Text(
             text ?? "",
-            style: textStyle,
+            style: textStyle ?? TextStyles.medium16.copyWith(color: ColorName.primary50,),
           ),
     );
   }

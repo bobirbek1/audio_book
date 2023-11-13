@@ -9,6 +9,7 @@ class RegularElevatedButton extends StatelessWidget {
   final Size? size;
   final Color? backgroundColor;
   final double? radius;
+  final TextStyle? style;
   const RegularElevatedButton(
       {required this.onPressed,
       this.text,
@@ -16,7 +17,9 @@ class RegularElevatedButton extends StatelessWidget {
       this.size,
       this.backgroundColor,
       this.radius,
-      super.key}):assert(text != null && child == null || text == null && child != null );
+      this.style,
+      super.key})
+      : assert(text != null && child == null || text == null && child != null);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class RegularElevatedButton extends StatelessWidget {
       child: text != null
           ? Text(
               text!,
-              style: TextStyles.medium16.copyWith(
+              style: style ?? TextStyles.medium16.copyWith(
                 color: ColorName.white,
               ),
             )

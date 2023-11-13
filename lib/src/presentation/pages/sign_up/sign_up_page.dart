@@ -3,17 +3,15 @@ import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
-import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final emailCtrl = TextEditingController();
+    final nameCtrl = TextEditingController();
     final passCtrl = TextEditingController();
     return Scaffold(
       body: Padding(
@@ -35,7 +33,7 @@ class SignInPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Log in to your account",
+                    "Register",
                     style: TextStyles.semiBold16,
                   ),
                 ],
@@ -43,67 +41,34 @@ class SignInPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              _SignInForm(
+              _SignUpForm(
                 emailCtrl: emailCtrl,
-                passwordCtrl: passCtrl,
+                passCtrl: passCtrl,
+                nameCtrl: nameCtrl,
                 onValidation: (isValid) {},
               ),
-              const _CheckBoxWidget(),
+              const SizedBox(
+                height: 16,
+              ),
+              const _PrivacyPolicyText(),
+              const SizedBox(
+                height: 16,
+              ),
               RegularElevatedButton(
                 onPressed: () {},
-                text: "Login",
+                text: "Register",
                 size: const Size(
                   double.infinity,
                   56,
                 ),
               ),
               const SizedBox(
-                height: 8,
+                height: 16,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  RegularTextButton(
-                    onPressed: () {},
-                    text: "Forget Password?",
-                    textStyle: TextStyles.semiBold14.copyWith(
-                      color: ColorName.accent50,
-                    ),
-                    foregroundColor: ColorName.accent50,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              const Text(
-                "Or login with",
-                style: TextStyles.regular14,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              _SocialMediaButton(
+              RegularOutlineButton(
                 onPressed: () {},
-                icon: Assets.icons.googleIcon.path,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              RichText(
-                text: TextSpan(
-                  text: "Don't have an account?  ",
-                  style: TextStyles.regular14,
-                  children: [
-                    TextSpan(
-                      text: "Register",
-                      style: TextStyles.semiBold14.copyWith(
-                        color: ColorName.accent50,
-                      ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
-                    ),
-                  ],
-                ),
+                text: "Cancel",
+                size: const Size.fromHeight(56),
               ),
               const SizedBox(
                 height: 32,
@@ -116,72 +81,60 @@ class SignInPage extends StatelessWidget {
   }
 }
 
-class _SocialMediaButton extends StatelessWidget {
-  final String icon;
-  final VoidCallback? onPressed;
-  const _SocialMediaButton({required this.onPressed, required this.icon});
+class _PrivacyPolicyText extends StatelessWidget {
+  const _PrivacyPolicyText();
 
   @override
   Widget build(BuildContext context) {
-    return RegularOutlineButton(
-      onPressed: onPressed,
-      size: const Size.fromHeight(56),
-      child: SvgPicture.asset(
-        icon,
-      ),
-    );
-  }
-}
-
-class _CheckBoxWidget extends StatefulWidget {
-  const _CheckBoxWidget();
-
-  @override
-  State<_CheckBoxWidget> createState() => _CheckBoxWidgetState();
-}
-
-class _CheckBoxWidgetState extends State<_CheckBoxWidget> {
-  bool isChecked = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(
-          onChanged: (value) {
-            setState(() {
-              isChecked = !isChecked;
-            });
-          },
-          value: isChecked,
-          checkColor: ColorName.white,
-          activeColor: ColorName.primary50,
-          side: const BorderSide(
-            color: ColorName.primary20,
-            width: 1,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              4,
-            ),
-          ),
-        ),
-        const Text(
-          "Remember me",
+    return RichText(
+      text: TextSpan(
+          text: "By singing up, you agree to our ",
           style: TextStyles.regular14,
-        ),
-      ],
+          children: [
+            TextSpan(
+              text: "Terms",
+              style: TextStyles.semiBold14.copyWith(
+                color: ColorName.accent50,
+              ),
+            ),
+            const TextSpan(
+              text: ", ",
+              style: TextStyles.regular14,
+            ),
+            TextSpan(
+              text: "Data policy",
+              style: TextStyles.semiBold14.copyWith(
+                color: ColorName.accent50,
+              ),
+            ),
+            const TextSpan(
+              text: " and ",
+              style: TextStyles.regular14,
+            ),
+            TextSpan(
+              text: "Cookies Policy",
+              style: TextStyles.semiBold14.copyWith(
+                color: ColorName.accent50,
+              ),
+            ),
+            const TextSpan(
+              text: ".",
+              style: TextStyles.regular14,
+            ),
+          ]),
     );
   }
 }
 
-class _SignInForm extends StatelessWidget {
+class _SignUpForm extends StatelessWidget {
   final TextEditingController emailCtrl;
-  final TextEditingController passwordCtrl;
+  final TextEditingController passCtrl;
+  final TextEditingController nameCtrl;
   final void Function(bool isValid) onValidation;
-  const _SignInForm({
+  const _SignUpForm({
     required this.emailCtrl,
-    required this.passwordCtrl,
+    required this.passCtrl,
+    required this.nameCtrl,
     required this.onValidation,
   });
 
@@ -195,6 +148,31 @@ class _SignInForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: nameCtrl,
+            validator: (value) {
+              if (value != null && value.isNotEmpty) {
+                return null;
+              }
+              return "Please enter your fullname";
+            },
+            decoration: InputDecoration(
+              hintText: "Fullname",
+              hintStyle: TextStyles.medium14.copyWith(
+                color: ColorName.neutral40,
+              ),
+              fillColor: ColorName.neutral5,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          TextFormField(
+            controller: emailCtrl,
             validator: (value) {
               final regExp = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
               if (value != null && regExp.hasMatch(value)) {
@@ -219,6 +197,7 @@ class _SignInForm extends StatelessWidget {
             height: 16,
           ),
           TextFormField(
+            controller: passCtrl,
             validator: (value) {
               final regExp = RegExp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
               if (value != null) {
