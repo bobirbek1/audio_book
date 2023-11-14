@@ -2,6 +2,7 @@ import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/presentation/widgets/page_indicator.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -55,7 +56,10 @@ class OnBoardingPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context, generateRoute(Pages.signIn));
+                      },
                       style: TextButton.styleFrom(
                           fixedSize: const Size.fromHeight(56),
                           shape: RoundedRectangleBorder(
@@ -77,7 +81,8 @@ class OnBoardingPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (pageController.page == 2) {
-                          return;
+                          Navigator.pushReplacement(
+                              context, generateRoute(Pages.signIn));
                         }
                         pageController.animateToPage(
                             pageController.page!.toInt() + 1,

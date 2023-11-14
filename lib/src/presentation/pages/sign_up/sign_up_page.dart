@@ -66,7 +66,9 @@ class SignUpPage extends StatelessWidget {
                 height: 16,
               ),
               RegularOutlineButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 text: "Cancel",
                 size: const Size.fromHeight(56),
               ),

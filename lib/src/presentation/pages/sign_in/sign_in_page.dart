@@ -4,6 +4,7 @@ import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -100,7 +101,13 @@ class SignInPage extends StatelessWidget {
                       style: TextStyles.semiBold14.copyWith(
                         color: ColorName.accent50,
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            generateRoute(Pages.signUp)
+                          );
+                        },
                     ),
                   ],
                 ),

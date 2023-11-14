@@ -1,5 +1,5 @@
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
+import 'package:audio_book/src/presentation/pages/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
         scaffoldBackgroundColor: ColorName.white,
       ),
-      home: const SignUpPage(),
+      home: const SplashPage(),
     );
   }
 }
