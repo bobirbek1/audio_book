@@ -30,18 +30,18 @@ class SignUpViewModel extends ChangeNotifier {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
         _state = SignUpState(
-            state: BaseState.loaded,
+            state: BaseState.error,
             error: 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
         _state = SignUpState(
-            state: BaseState.loaded,
+            state: BaseState.error,
             error: 'The account already exists for that email.');
       }
     } catch (e) {
       print("Failed to sign up: $e");
       _state = SignUpState(
-          state: BaseState.loaded,
+          state: BaseState.error,
           error: 'Unknown error occurred, please try again!');
     } finally {
       notifyListeners();
