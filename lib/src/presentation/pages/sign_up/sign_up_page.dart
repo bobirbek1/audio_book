@@ -1,6 +1,7 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
@@ -52,15 +53,36 @@ class SignUpPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              RegularElevatedButton(
-                onPressed: () {
-                  context.read<SignUpViewModel>().signUp();
+              Consumer<SignUpViewModel>(
+                builder: (context, value, child) => switch (value.state.state) {
+                  BaseState.loading => RegularElevatedButton(
+                      onPressed: null,
+                      size: const Size(
+                        double.infinity,
+                        56,
+                      ),
+                      child: child,
+                    ),
+                  BaseState.loaded => RegularElevatedButton(
+                      onPressed: () {},
+                      text: "Register",
+                      size: const Size(
+                        double.infinity,
+                        56,
+                      ),
+                    ),
+                  _ => RegularElevatedButton(
+                      onPressed: () {
+                        context.read<SignUpViewModel>().signUp();
+                      },
+                      text: "Register",
+                      size: const Size(
+                        double.infinity,
+                        56,
+                      ),
+                    ),
                 },
-                text: "Register",
-                size: const Size(
-                  double.infinity,
-                  56,
-                ),
+                child: const CircularProgressIndicator.adaptive(),
               ),
               const SizedBox(
                 height: 16,
