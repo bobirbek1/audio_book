@@ -1,7 +1,9 @@
 import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
+import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 enum Pages {
   onBoarding,
@@ -24,7 +26,10 @@ Route generateRoute(Pages page, {Object? argument}) {
     case Pages.signUp:
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
-        return const SignUpPage();
+        return ChangeNotifierProvider(
+          create: (context) => SignUpViewModel(),
+          builder: (context, child) => child!,
+          child: const SignUpPage(),);
       });
     default:
       return _buildMaterialRoute(

@@ -1,18 +1,17 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final emailCtrl = TextEditingController();
-    final nameCtrl = TextEditingController();
-    final passCtrl = TextEditingController();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -42,10 +41,9 @@ class SignUpPage extends StatelessWidget {
                 height: 16,
               ),
               _SignUpForm(
-                emailCtrl: emailCtrl,
-                passCtrl: passCtrl,
-                nameCtrl: nameCtrl,
-                onValidation: (isValid) {},
+                onValidation: (isValid) {
+                  context.read<SignUpViewModel>().isFieldValid = isValid;
+                },
               ),
               const SizedBox(
                 height: 16,
@@ -55,7 +53,9 @@ class SignUpPage extends StatelessWidget {
                 height: 16,
               ),
               RegularElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<SignUpViewModel>().signUp();
+                },
                 text: "Register",
                 size: const Size(
                   double.infinity,
@@ -129,14 +129,8 @@ class _PrivacyPolicyText extends StatelessWidget {
 }
 
 class _SignUpForm extends StatelessWidget {
-  final TextEditingController emailCtrl;
-  final TextEditingController passCtrl;
-  final TextEditingController nameCtrl;
   final void Function(bool isValid) onValidation;
   const _SignUpForm({
-    required this.emailCtrl,
-    required this.passCtrl,
-    required this.nameCtrl,
     required this.onValidation,
   });
 
@@ -150,7 +144,7 @@ class _SignUpForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
-            controller: nameCtrl,
+            controller: context.read<SignUpViewModel>().nameCtrl,
             validator: (value) {
               if (value != null && value.isNotEmpty) {
                 return null;
@@ -174,7 +168,7 @@ class _SignUpForm extends StatelessWidget {
             height: 16,
           ),
           TextFormField(
-            controller: emailCtrl,
+            controller: context.read<SignUpViewModel>().emailCtrl,
             validator: (value) {
               final regExp = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
               if (value != null && regExp.hasMatch(value)) {
@@ -199,7 +193,7 @@ class _SignUpForm extends StatelessWidget {
             height: 16,
           ),
           TextFormField(
-            controller: passCtrl,
+            controller: context.read<SignUpViewModel>().passCtrl,
             validator: (value) {
               final regExp = RegExp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
               if (value != null) {
