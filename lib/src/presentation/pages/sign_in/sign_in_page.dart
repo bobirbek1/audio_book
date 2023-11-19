@@ -60,7 +60,14 @@ class SignInPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   RegularTextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        generateRoute(
+                          Pages.forgetPasswordEmail,
+                        ),
+                      );
+                    },
                     text: "Forget Password?",
                     textStyle: TextStyles.semiBold14.copyWith(
                       color: ColorName.accent50,

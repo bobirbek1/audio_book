@@ -1,3 +1,5 @@
+import 'package:audio_book/src/presentation/pages/forget_password/forget_password_email.dart';
+import 'package:audio_book/src/presentation/pages/forget_password/forget_password_finish.dart';
 import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
@@ -10,6 +12,8 @@ enum Pages {
   onBoarding,
   signIn,
   signUp,
+  forgetPasswordEmail,
+  forgetPasswordFinish,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -34,6 +38,16 @@ Route generateRoute(Pages page, {Object? argument}) {
           create: (context) => SignUpViewModel(),
           builder: (context, child) => child!,
           child: const SignUpPage(),);
+      });
+    case Pages.forgetPasswordEmail:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const ForgetPasswordEmail();
+      });
+    case Pages.forgetPasswordFinish:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const ForgetPasswordFinish();
       });
     default:
       return _buildMaterialRoute(
