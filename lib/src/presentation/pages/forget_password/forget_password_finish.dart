@@ -56,7 +56,9 @@ class ForgetPasswordFinish extends StatelessWidget {
                 height: 24,
               ),
               RegularOutlineButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 size: const Size.fromHeight(56),
                 text: "Cancel",
               ),

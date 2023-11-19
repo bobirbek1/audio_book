@@ -3,6 +3,7 @@ import 'package:audio_book/src/presentation/pages/forget_password/forget_passwor
 import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
+import 'package:audio_book/src/presentation/view_models/forget_password_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/sign_in_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,10 @@ Route generateRoute(Pages page, {Object? argument}) {
     case Pages.forgetPasswordEmail:
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
-        return const ForgetPasswordEmail();
+        return ChangeNotifierProvider(
+          create: (context) => ForgetPasswordViewModel(),
+          builder: (context, child) => child!,
+          child: const ForgetPasswordEmail(),);
       });
     case Pages.forgetPasswordFinish:
       return _buildMaterialRoute(

@@ -1,10 +1,14 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
+import 'package:audio_book/src/presentation/view_models/forget_password_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgetPasswordEmail extends StatelessWidget {
   const ForgetPasswordEmail({super.key});
@@ -48,7 +52,8 @@ class ForgetPasswordEmail extends StatelessWidget {
               ),
               _EmailForm(
                 onValidation: (isValid) {
-                  // context.read<SignInViewModel>().isFieldsValid = isValid;
+                  context.read<ForgetPasswordViewModel>().isEmailValid =
+                      isValid;
                 },
               ),
               const SizedBox(
@@ -79,47 +84,43 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final signIngVM = context.watch<SignInViewModel>();
+    final forgetPassVM = context.watch<ForgetPasswordViewModel>();
 
-    // if (signIngVM.state.state == BaseState.error) {
-    //   // context.showSnackBar(signIngVM.state.error);
-    // }
-
-    return RegularElevatedButton(
-      onPressed: () {
-        // signIngVM.signIn();
+    if (forgetPassVM.state.state == BaseState.error) {
+      context.showSnackBar(forgetPassVM.state.error);
+    } else if (forgetPassVM.state.state == BaseState.loaded) {
+      WidgetsFlutterBinding.ensureInitialized()
+          .addPostFrameCallback((timeStamp) {
         Navigator.pushReplacement(
           context,
-          generateRoute(Pages.forgetPasswordFinish,argument: "test.dev@gmail.com",),
+          generateRoute(
+            Pages.forgetPasswordFinish,
+            argument: forgetPassVM.emailCtrl.text,
+          ),
         );
-      },
-      size: const Size(
-        double.infinity,
-        56,
-      ),
-      text: "Submit",
-    );
+      });
+    }
 
-    // switch (signIngVM.state.state) {
-    //   BaseState.loading => const RegularElevatedButton(
-    //       onPressed: null,
-    //       size: Size(
-    //         double.infinity,
-    //         56,
-    //       ),
-    //       child: CircularProgressIndicator.adaptive(),
-    //     ),
-    //   _ => RegularElevatedButton(
-    //       onPressed: () {
-    //         signIngVM.signIn();
-    //       },
-    //       size: const Size(
-    //         double.infinity,
-    //         56,
-    //       ),
-    //       text: "Login",
-    //     ),
-    // };
+    return switch (forgetPassVM.state.state) {
+      BaseState.loading => const RegularElevatedButton(
+          onPressed: null,
+          size: Size(
+            double.infinity,
+            56,
+          ),
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      _ => RegularElevatedButton(
+          onPressed: () {
+            forgetPassVM.sentChangePasswordEmail();
+          },
+          size: const Size(
+            double.infinity,
+            56,
+          ),
+          text: "Submit",
+        ),
+    };
   }
 }
 
@@ -137,6 +138,7 @@ class _EmailForm extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: () => onValidation(formKey.currentState?.validate() ?? false),
       child: TextFormField(
+        controller: context.read<ForgetPasswordViewModel>().emailCtrl,
         validator: (value) {
           final regExp = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
           if (value != null && regExp.hasMatch(value)) {
