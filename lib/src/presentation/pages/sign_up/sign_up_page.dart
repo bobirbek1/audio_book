@@ -211,6 +211,7 @@ class _SignUpForm extends StatelessWidget {
               }
               return "Please enter your email";
             },
+             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: "Email",
               hintStyle: TextStyles.medium14.copyWith(
@@ -240,6 +241,7 @@ class _SignUpForm extends StatelessWidget {
               }
               return "Password must include letters,numbers";
             },
+            obscureText: true,
             decoration: InputDecoration(
               hintText: "Password",
               hintStyle: TextStyles.medium14.copyWith(

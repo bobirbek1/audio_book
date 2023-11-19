@@ -1,6 +1,9 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
+import 'package:audio_book/src/presentation/view_models/sign_in_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
@@ -8,14 +11,13 @@ import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final emailCtrl = TextEditingController();
-    final passCtrl = TextEditingController();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -45,19 +47,12 @@ class SignInPage extends StatelessWidget {
                 height: 16,
               ),
               _SignInForm(
-                emailCtrl: emailCtrl,
-                passwordCtrl: passCtrl,
-                onValidation: (isValid) {},
+                onValidation: (isValid) {
+                  context.read<SignInViewModel>().isFieldsValid = isValid;
+                },
               ),
               const _CheckBoxWidget(),
-              RegularElevatedButton(
-                onPressed: () {},
-                text: "Login",
-                size: const Size(
-                  double.infinity,
-                  56,
-                ),
-              ),
+              const _LoginButton(),
               const SizedBox(
                 height: 8,
               ),
@@ -103,10 +98,7 @@ class SignInPage extends StatelessWidget {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.push(
-                            context,
-                            generateRoute(Pages.signUp)
-                          );
+                          Navigator.push(context, generateRoute(Pages.signUp));
                         },
                     ),
                   ],
@@ -120,6 +112,40 @@ class SignInPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  const _LoginButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final signIngVM = context.watch<SignInViewModel>();
+
+    if (signIngVM.state.state == BaseState.error) {
+      context.showSnackBar(signIngVM.state.error);
+    }
+
+    return switch (signIngVM.state.state) {
+      BaseState.loading => const RegularElevatedButton(
+          onPressed: null,
+          size: Size(
+            double.infinity,
+            56,
+          ),
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      _ => RegularElevatedButton(
+          onPressed: () {
+            signIngVM.signIn();
+          },
+          size: const Size(
+            double.infinity,
+            56,
+          ),
+          text: "Login",
+        ),
+    };
   }
 }
 
@@ -183,12 +209,8 @@ class _CheckBoxWidgetState extends State<_CheckBoxWidget> {
 }
 
 class _SignInForm extends StatelessWidget {
-  final TextEditingController emailCtrl;
-  final TextEditingController passwordCtrl;
   final void Function(bool isValid) onValidation;
   const _SignInForm({
-    required this.emailCtrl,
-    required this.passwordCtrl,
     required this.onValidation,
   });
 
@@ -202,6 +224,7 @@ class _SignInForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: context.read<SignInViewModel>().emailCtrl,
             validator: (value) {
               final regExp = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
               if (value != null && regExp.hasMatch(value)) {
@@ -209,6 +232,7 @@ class _SignInForm extends StatelessWidget {
               }
               return "Please enter your email";
             },
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: "Email",
               hintStyle: TextStyles.medium14.copyWith(
@@ -226,6 +250,7 @@ class _SignInForm extends StatelessWidget {
             height: 16,
           ),
           TextFormField(
+            controller: context.read<SignInViewModel>().passCtrl,
             validator: (value) {
               final regExp = RegExp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
               if (value != null) {
@@ -237,6 +262,7 @@ class _SignInForm extends StatelessWidget {
               }
               return "Password must include letters,numbers";
             },
+            obscureText: true,
             decoration: InputDecoration(
               hintText: "Password",
               hintStyle: TextStyles.medium14.copyWith(
