@@ -87,7 +87,9 @@ class SignInPage extends StatelessWidget {
                 height: 20,
               ),
               _SocialMediaButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<SignInViewModel>().SignInWithGoogle();
+                },
                 icon: Assets.icons.googleIcon.path,
               ),
               const SizedBox(
@@ -163,13 +165,23 @@ class _SocialMediaButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RegularOutlineButton(
-      onPressed: onPressed,
-      size: const Size.fromHeight(56),
-      child: SvgPicture.asset(
-        icon,
-      ),
-    );
+    final signInVM = context.watch<SignInViewModel>();
+    if (signInVM.googleState.state == BaseState.error) {
+      context.showSnackBar(signInVM.googleState.error);
+    }
+    return switch (signInVM.googleState.state) {
+      BaseState.loading => RegularOutlineButton(
+          onPressed: onPressed,
+          size: const Size.fromHeight(56),
+          child: const CircularProgressIndicator.adaptive()),
+      _ => RegularOutlineButton(
+          onPressed: onPressed,
+          size: const Size.fromHeight(56),
+          child: SvgPicture.asset(
+            icon,
+          ),
+        )
+    };
   }
 }
 
