@@ -51,7 +51,9 @@ class SignInPage extends StatelessWidget {
                   context.read<SignInViewModel>().isFieldsValid = isValid;
                 },
               ),
-              const _CheckBoxWidget(),
+              const SizedBox(
+                height: 16,
+              ),
               const _LoginButton(),
               const SizedBox(
                 height: 8,
