@@ -57,7 +57,7 @@ class SignInViewModel extends ChangeNotifier {
     }
   }
 
-  void SignInWithGoogle() async {
+  void signInWithGoogle() async {
     _googleState = SignInState(state: BaseState.loading);
     notifyListeners();
     final credential = await _fetchGoogleCredentials();

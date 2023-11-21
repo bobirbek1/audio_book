@@ -2,6 +2,8 @@ import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/presentation/widgets/page_indicator.dart';
+import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
+import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,30 +57,20 @@ class OnBoardingPage extends StatelessWidget {
                     width: 40,
                   ),
                   Expanded(
-                    child: TextButton(
+                    child: RegularTextButton(
                       onPressed: () {
                         Navigator.pushReplacement(
                             context, generateRoute(Pages.signIn));
                       },
-                      style: TextButton.styleFrom(
-                          fixedSize: const Size.fromHeight(56),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              8,
-                            ),
-                          ),
-                          foregroundColor: ColorName.primary50),
-                      child: Text("Skip",
-                          textAlign: TextAlign.center,
-                          style: TextStyles.medium16
-                              .copyWith(color: ColorName.primary50)),
+                      size: const Size.fromHeight(56),
+                      text: "Skip",
                     ),
                   ),
                   const SizedBox(
                     width: 15,
                   ),
                   Expanded(
-                    child: ElevatedButton(
+                    child: RegularElevatedButton(
                       onPressed: () {
                         if (pageController.page == 2) {
                           Navigator.pushReplacement(
@@ -89,20 +81,8 @@ class OnBoardingPage extends StatelessWidget {
                             duration: const Duration(milliseconds: 250),
                             curve: Curves.ease);
                       },
-                      style: ElevatedButton.styleFrom(
-                          fixedSize: const Size.fromHeight(56),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              8,
-                            ),
-                          ),
-                          backgroundColor: ColorName.primary50),
-                      child: Text(
-                        "Next",
-                        textAlign: TextAlign.center,
-                        style: TextStyles.medium16
-                            .copyWith(color: ColorName.white),
-                      ),
+                      size: const Size.fromHeight(56),
+                      text: "Next",
                     ),
                   ),
                   const SizedBox(

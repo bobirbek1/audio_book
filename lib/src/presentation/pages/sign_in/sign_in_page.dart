@@ -88,7 +88,7 @@ class SignInPage extends StatelessWidget {
               ),
               _SocialMediaButton(
                 onPressed: () {
-                  context.read<SignInViewModel>().SignInWithGoogle();
+                  context.read<SignInViewModel>().signInWithGoogle();
                 },
                 icon: Assets.icons.googleIcon.path,
               ),
