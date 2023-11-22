@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPasswordViewModel extends ChangeNotifier {
+  final FirebaseAuth _auth;
+
+  ForgetPasswordViewModel(this._auth);
+
   final emailCtrl = TextEditingController();
 
   bool _isEmailValid = false;
@@ -21,7 +25,7 @@ class ForgetPasswordViewModel extends ChangeNotifier {
     try {
       _state = ForgetPasswordState(state: BaseState.loading);
       notifyListeners();
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailCtrl.text);
+      await _auth.sendPasswordResetEmail(email: emailCtrl.text);
       _state = ForgetPasswordState(state: BaseState.loaded);
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {

@@ -6,6 +6,7 @@ import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:audio_book/src/presentation/view_models/forget_password_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/sign_in_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
+import 'package:audio_book/src/services/injection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return ChangeNotifierProvider(
-          create: (context) => SignInViewModel(),
+          create: (context) => SignInViewModel(getIt.get(),getIt.get()),
           builder: (context, child) => child!,
           child: const SignInPage(),);
       });
@@ -37,7 +38,7 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return ChangeNotifierProvider(
-          create: (context) => SignUpViewModel(),
+          create: (context) => SignUpViewModel(getIt.get()),
           builder: (context, child) => child!,
           child: const SignUpPage(),);
       });
@@ -45,7 +46,7 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return ChangeNotifierProvider(
-          create: (context) => ForgetPasswordViewModel(),
+          create: (context) => ForgetPasswordViewModel(getIt.get()),
           builder: (context, child) => child!,
           child: const ForgetPasswordEmail(),);
       });

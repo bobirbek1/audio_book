@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserViewModel extends ChangeNotifier {
-  Future<void> init() async {
-    _db = FirebaseFirestore.instance;
-    _prefs = await SharedPreferences.getInstance();
+  UserViewModel(this._db, this._prefs);
 
+  Future<void> init() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await getUser(user.uid);
@@ -19,9 +18,9 @@ class UserViewModel extends ChangeNotifier {
         true;
   }
 
-  late FirebaseFirestore _db;
+  final FirebaseFirestore _db;
 
-  late SharedPreferences _prefs;
+  final SharedPreferences _prefs;
 
   bool _isFirstOpen = true;
 
@@ -57,7 +56,7 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
- Future<void> makeUserNotFirst() async {
+  Future<void> makeUserNotFirst() async {
     await _prefs.setBool("is_first_open", false);
   }
 }

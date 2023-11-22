@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUpViewModel extends ChangeNotifier {
+  final FirebaseAuth _auth;
+
+  SignUpViewModel(this._auth);
+
   final nameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
@@ -22,7 +26,7 @@ class SignUpViewModel extends ChangeNotifier {
     try {
       _state = SignUpState(state: BaseState.loading);
       notifyListeners();
-      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final user = await _auth.createUserWithEmailAndPassword(
           email: emailCtrl.text, password: passCtrl.text);
       print("user created: ${user.user?.email}");
       _state = SignUpState(state: BaseState.loaded, user: user.user);

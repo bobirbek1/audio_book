@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInViewModel extends ChangeNotifier {
+  final FirebaseAuth _auth;
+  final GoogleSignIn _googleSignIn;
+
+  SignInViewModel(this._auth, this._googleSignIn);
+
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
 
@@ -25,7 +30,7 @@ class SignInViewModel extends ChangeNotifier {
       _state = SignInState(state: BaseState.loading);
       notifyListeners();
       final userCredentials =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await _auth.signInWithEmailAndPassword(
         email: emailCtrl.text,
         password: passCtrl.text,
       );
@@ -66,7 +71,7 @@ class SignInViewModel extends ChangeNotifier {
       return;
     }
     try {
-      final user = await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = await _auth.signInWithCredential(credential);
       _googleState = SignInState(state: BaseState.loaded, user: user.user);
       print('google sign in user: $user');
     } on FirebaseAuthException catch (e) {
@@ -87,9 +92,7 @@ class SignInViewModel extends ChangeNotifier {
   Future<OAuthCredential?> _fetchGoogleCredentials() async {
     try {
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn(
-              clientId:
-                  "861791891738-ofnjunu5djnpv7idj920dk7v16udiqjn.apps.googleusercontent.com")
+      final GoogleSignInAccount? googleUser = await _googleSignIn
           .signIn();
 
       // Obtain the auth details from the request
