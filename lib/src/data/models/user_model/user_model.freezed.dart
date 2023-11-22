@@ -20,6 +20,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
+  String? get uid => throw _privateConstructorUsedError;
   String? get fullName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get birthDate => throw _privateConstructorUsedError;
@@ -37,7 +38,11 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {String? fullName, String? email, String? birthDate, String? phone});
+      {String? uid,
+      String? fullName,
+      String? email,
+      String? birthDate,
+      String? phone});
 }
 
 /// @nodoc
@@ -53,12 +58,17 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uid = freezed,
     Object? fullName = freezed,
     Object? email = freezed,
     Object? birthDate = freezed,
     Object? phone = freezed,
   }) {
     return _then(_value.copyWith(
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String?,
       fullName: freezed == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
@@ -87,7 +97,11 @@ abstract class _$$PersonImplCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? fullName, String? email, String? birthDate, String? phone});
+      {String? uid,
+      String? fullName,
+      String? email,
+      String? birthDate,
+      String? phone});
 }
 
 /// @nodoc
@@ -101,12 +115,17 @@ class __$$PersonImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uid = freezed,
     Object? fullName = freezed,
     Object? email = freezed,
     Object? birthDate = freezed,
     Object? phone = freezed,
   }) {
     return _then(_$PersonImpl(
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String?,
       fullName: freezed == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
@@ -130,11 +149,14 @@ class __$$PersonImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PersonImpl implements _Person {
-  _$PersonImpl({this.fullName, this.email, this.birthDate, this.phone});
+  _$PersonImpl(
+      {this.uid, this.fullName, this.email, this.birthDate, this.phone});
 
   factory _$PersonImpl.fromJson(Map<String, dynamic> json) =>
       _$$PersonImplFromJson(json);
 
+  @override
+  final String? uid;
   @override
   final String? fullName;
   @override
@@ -146,7 +168,7 @@ class _$PersonImpl implements _Person {
 
   @override
   String toString() {
-    return 'UserModel(fullName: $fullName, email: $email, birthDate: $birthDate, phone: $phone)';
+    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, birthDate: $birthDate, phone: $phone)';
   }
 
   @override
@@ -154,6 +176,7 @@ class _$PersonImpl implements _Person {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PersonImpl &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
             (identical(other.email, email) || other.email == email) &&
@@ -165,7 +188,7 @@ class _$PersonImpl implements _Person {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, fullName, email, birthDate, phone);
+      Object.hash(runtimeType, uid, fullName, email, birthDate, phone);
 
   @JsonKey(ignore: true)
   @override
@@ -183,13 +206,16 @@ class _$PersonImpl implements _Person {
 
 abstract class _Person implements UserModel {
   factory _Person(
-      {final String? fullName,
+      {final String? uid,
+      final String? fullName,
       final String? email,
       final String? birthDate,
       final String? phone}) = _$PersonImpl;
 
   factory _Person.fromJson(Map<String, dynamic> json) = _$PersonImpl.fromJson;
 
+  @override
+  String? get uid;
   @override
   String? get fullName;
   @override

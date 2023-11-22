@@ -37,7 +37,7 @@ class SignUpViewModel extends ChangeNotifier {
         _state = SignUpState(
             state: BaseState.error,
             error: 'The account already exists for that email.');
-      }else {
+      } else {
         print('Unknown error occurred, please try again!');
         _state = SignUpState(
             state: BaseState.error,

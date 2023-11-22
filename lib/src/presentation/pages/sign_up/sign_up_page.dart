@@ -1,9 +1,11 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/data/models/user_model/user_model.dart';
 import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +87,16 @@ class _RegisterButton extends StatelessWidget {
 
     if (signUpVM.state.state == BaseState.error) {
       context.showSnackBar(signUpVM.state.error);
+    }
+
+    if (signUpVM.state.user != null) {
+      final user = signUpVM.state.user!;
+      final userModel = UserModel(
+        uid: user.uid,
+        fullName: user.displayName ?? signUpVM.nameCtrl.text,
+        email: user.email,
+      );
+      context.read<UserViewModel>().saveUser(userModel);
     }
 
     return switch (signUpVM.state.state) {
@@ -211,7 +223,7 @@ class _SignUpForm extends StatelessWidget {
               }
               return "Please enter your email";
             },
-             keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: "Email",
               hintStyle: TextStyles.medium14.copyWith(
