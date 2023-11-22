@@ -11,6 +11,7 @@ class UserModel with _$UserModel {
     String? fullName,
     String? email,
     String? birthDate,
+    String? photo,
     String? phone,
   }) = _Person;
 

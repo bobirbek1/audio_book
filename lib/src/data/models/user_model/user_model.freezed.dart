@@ -24,6 +24,7 @@ mixin _$UserModel {
   String? get fullName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get birthDate => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $UserModelCopyWith<$Res> {
       String? fullName,
       String? email,
       String? birthDate,
+      String? photo,
       String? phone});
 }
 
@@ -62,6 +64,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? fullName = freezed,
     Object? email = freezed,
     Object? birthDate = freezed,
+    Object? photo = freezed,
     Object? phone = freezed,
   }) {
     return _then(_value.copyWith(
@@ -80,6 +83,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       birthDate: freezed == birthDate
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
               as String?,
       phone: freezed == phone
           ? _value.phone
@@ -101,6 +108,7 @@ abstract class _$$PersonImplCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String? fullName,
       String? email,
       String? birthDate,
+      String? photo,
       String? phone});
 }
 
@@ -119,6 +127,7 @@ class __$$PersonImplCopyWithImpl<$Res>
     Object? fullName = freezed,
     Object? email = freezed,
     Object? birthDate = freezed,
+    Object? photo = freezed,
     Object? phone = freezed,
   }) {
     return _then(_$PersonImpl(
@@ -138,6 +147,10 @@ class __$$PersonImplCopyWithImpl<$Res>
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
       phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
@@ -150,7 +163,12 @@ class __$$PersonImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PersonImpl implements _Person {
   _$PersonImpl(
-      {this.uid, this.fullName, this.email, this.birthDate, this.phone});
+      {this.uid,
+      this.fullName,
+      this.email,
+      this.birthDate,
+      this.photo,
+      this.phone});
 
   factory _$PersonImpl.fromJson(Map<String, dynamic> json) =>
       _$$PersonImplFromJson(json);
@@ -164,11 +182,13 @@ class _$PersonImpl implements _Person {
   @override
   final String? birthDate;
   @override
+  final String? photo;
+  @override
   final String? phone;
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, birthDate: $birthDate, phone: $phone)';
+    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, birthDate: $birthDate, photo: $photo, phone: $phone)';
   }
 
   @override
@@ -182,13 +202,14 @@ class _$PersonImpl implements _Person {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.birthDate, birthDate) ||
                 other.birthDate == birthDate) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.phone, phone) || other.phone == phone));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, uid, fullName, email, birthDate, phone);
+      Object.hash(runtimeType, uid, fullName, email, birthDate, photo, phone);
 
   @JsonKey(ignore: true)
   @override
@@ -210,6 +231,7 @@ abstract class _Person implements UserModel {
       final String? fullName,
       final String? email,
       final String? birthDate,
+      final String? photo,
       final String? phone}) = _$PersonImpl;
 
   factory _Person.fromJson(Map<String, dynamic> json) = _$PersonImpl.fromJson;
@@ -222,6 +244,8 @@ abstract class _Person implements UserModel {
   String? get email;
   @override
   String? get birthDate;
+  @override
+  String? get photo;
   @override
   String? get phone;
   @override

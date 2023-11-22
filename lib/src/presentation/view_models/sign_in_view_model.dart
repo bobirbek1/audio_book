@@ -68,6 +68,7 @@ class SignInViewModel extends ChangeNotifier {
     try {
       final user = await FirebaseAuth.instance.signInWithCredential(credential);
       _googleState = SignInState(state: BaseState.loaded, user: user.user);
+      print('google sign in user: $user');
     } on FirebaseAuthException catch (e) {
       print("Sign in with Google failed: ${e.code}");
       _googleState = SignInState(

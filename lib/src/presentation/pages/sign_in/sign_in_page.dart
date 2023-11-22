@@ -1,9 +1,11 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/data/models/user_model/user_model.dart';
 import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/sign_in_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
@@ -131,13 +133,17 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final signIngVM = context.watch<SignInViewModel>();
+    final signInVM = context.watch<SignInViewModel>();
 
-    if (signIngVM.state.state == BaseState.error) {
-      context.showSnackBar(signIngVM.state.error);
+    if (signInVM.state.state == BaseState.error) {
+      context.showSnackBar(signInVM.state.error);
     }
 
-    return switch (signIngVM.state.state) {
+    if (signInVM.state.user != null) {
+      context.read<UserViewModel>().getUser(signInVM.state.user!.uid);
+    }
+
+    return switch (signInVM.state.state) {
       BaseState.loading => const RegularElevatedButton(
           onPressed: null,
           size: Size(
@@ -148,7 +154,7 @@ class _LoginButton extends StatelessWidget {
         ),
       _ => RegularElevatedButton(
           onPressed: () {
-            signIngVM.signIn();
+            signInVM.signIn();
           },
           size: const Size(
             double.infinity,
@@ -168,9 +174,27 @@ class _SocialMediaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final signInVM = context.watch<SignInViewModel>();
-    if (signInVM.googleState.state == BaseState.error) {
-      context.showSnackBar(signInVM.googleState.error);
+    final userVM = context.read<UserViewModel>();
+    final state = signInVM.googleState;
+    if (state.state == BaseState.error) {
+      context.showSnackBar(state.error);
     }
+
+    if (state.user != null) {
+      userVM.getUser(state.user!.uid).then((value) {
+        if (userVM.user == null) {
+          final user = state.user!;
+          final userModel = UserModel(
+            uid: user.uid,
+            fullName: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+          );
+          userVM.saveUser(userModel);
+        }
+      });
+    }
+
     return switch (signInVM.googleState.state) {
       BaseState.loading => RegularOutlineButton(
           onPressed: onPressed,
