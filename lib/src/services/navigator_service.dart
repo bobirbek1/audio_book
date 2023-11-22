@@ -15,6 +15,7 @@ enum Pages {
   signUp,
   forgetPasswordEmail,
   forgetPasswordFinish,
+  mainPage,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -52,6 +53,11 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return const ForgetPasswordFinish();
+      });
+    case Pages.mainPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return Container(color: Colors.amber,);
       });
     default:
       return _buildMaterialRoute(

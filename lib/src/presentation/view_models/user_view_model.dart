@@ -1,17 +1,33 @@
 import 'package:audio_book/src/data/models/user_model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserViewModel extends ChangeNotifier {
-  UserViewModel() {
+  Future<void> init() async {
     _db = FirebaseFirestore.instance;
+    _prefs = await SharedPreferences.getInstance();
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await getUser(user.uid);
+    }
+    _isFirstOpen = _prefs.getBool(
+          "is_first_open",
+        ) ??
+        true;
   }
 
   late FirebaseFirestore _db;
 
-  DocumentSnapshot<Map<String, dynamic>>? _userDoc;
+  late SharedPreferences _prefs;
 
-  DocumentSnapshot<Map<String, dynamic>>? get userDoc => _userDoc;
+  bool _isFirstOpen = true;
+
+  bool get isFirstOpen => _isFirstOpen;
+
+  bool get userAvailable => _user != null;
 
   UserModel? _user;
 
@@ -31,13 +47,17 @@ class UserViewModel extends ChangeNotifier {
   Future<void> getUser(String uid) async {
     try {
       final doc = _db.doc("users/$uid");
-      _userDoc = await doc.get();
-      if (_userDoc!.exists && _userDoc!.data() != null) {
-        _user = UserModel.fromJson(_userDoc!.data()!);
+      final userDoc = await doc.get();
+      if (userDoc.exists && userDoc.data() != null) {
+        _user = UserModel.fromJson(userDoc.data()!);
       }
       print("user data => $_user");
     } catch (e) {
       print("Unknown exception occured, e: $e");
     }
+  }
+
+ Future<void> makeUserNotFirst() async {
+    await _prefs.setBool("is_first_open", false);
   }
 }
