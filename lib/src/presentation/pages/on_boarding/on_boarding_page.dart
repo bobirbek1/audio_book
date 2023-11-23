@@ -1,6 +1,6 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/page_indicator.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
@@ -130,7 +130,7 @@ class _PageItem extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyles.semiBold16,
+            style: Theme.of(context).textStyles.semiBold16,
           ),
           const SizedBox(
             height: 12,
@@ -138,7 +138,7 @@ class _PageItem extends StatelessWidget {
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: TextStyles.regular14.copyWith(
+            style: Theme.of(context).textStyles.regular14.copyWith(
               color: ColorName.neutral80,
             ),
           ),

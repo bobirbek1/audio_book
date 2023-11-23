@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class SplashPage extends StatelessWidget {
             Assets.images.logo.svg(width: 160, height: 160),
             Text(
               "version: 1.0",
-              style: TextStyles.regular14.copyWith(color: ColorName.primary50),
+              style: Theme.of(context).textStyles.regular14.copyWith(color: ColorName.primary50,),
             )
           ],
         ),

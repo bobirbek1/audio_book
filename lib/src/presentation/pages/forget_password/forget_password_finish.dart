@@ -1,5 +1,5 @@
 import 'package:audio_book/gen/assets.gen.dart';
-import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:flutter/material.dart';
 
@@ -25,12 +25,12 @@ class ForgetPasswordFinish extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "Email sent",
-                    style: TextStyles.semiBold16,
+                    style: Theme.of(context).textStyles.semiBold16,
                   ),
                 ],
               ),
@@ -40,15 +40,15 @@ class ForgetPasswordFinish extends StatelessWidget {
               RichText(
                 text: TextSpan(
                     text: "We sent an email to ",
-                    style: TextStyles.regular14,
+                    style: Theme.of(context).textStyles.regular14,
                     children: [
                       TextSpan(
                         text: email,
-                        style: TextStyles.semiBold14,
+                        style: Theme.of(context).textStyles.semiBold14,
                       ),
-                      const TextSpan(
+                      TextSpan(
                         text: " with a link to get back into your account.",
-                        style: TextStyles.regular14,
+                        style: Theme.of(context).textStyles.regular14,
                       ),
                     ]),
               ),

@@ -1,7 +1,7 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/helpers/extensions.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/forget_password_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
@@ -31,21 +31,21 @@ class ForgetPasswordEmail extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "Forget password",
-                    style: TextStyles.semiBold16,
+                    style: Theme.of(context).textStyles.semiBold16,
                   ),
                 ],
               ),
               const SizedBox(
                 height: 12,
               ),
-              const Text(
+              Text(
                 "Please fill email and we'll send you a link to get back into your account.",
-                style: TextStyles.regular14,
+                style: Theme.of(context).textStyles.regular14,
               ),
               const SizedBox(
                 height: 16,
@@ -149,7 +149,7 @@ class _EmailForm extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: "Email",
-          hintStyle: TextStyles.medium14.copyWith(
+          hintStyle: Theme.of(context).textStyles.medium14.copyWith(
             color: ColorName.neutral40,
           ),
           fillColor: ColorName.neutral5,

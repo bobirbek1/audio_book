@@ -1,8 +1,8 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/constants/text_styles.dart';
 import 'package:audio_book/src/data/models/user_model/user_model.dart';
 import 'package:audio_book/src/helpers/extensions.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
@@ -32,12 +32,12 @@ class SignUpPage extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "Register",
-                    style: TextStyles.semiBold16,
+                    style: Theme.of(context).textStyles.semiBold16,
                   ),
                 ],
               ),
@@ -79,7 +79,7 @@ class SignUpPage extends StatelessWidget {
 }
 
 class _RegisterButton extends StatelessWidget {
-  const _RegisterButton({super.key});
+  const _RegisterButton();
 
   @override
   Widget build(BuildContext context) {
@@ -138,37 +138,37 @@ class _PrivacyPolicyText extends StatelessWidget {
     return RichText(
       text: TextSpan(
           text: "By singing up, you agree to our ",
-          style: TextStyles.regular14,
+          style: Theme.of(context).textStyles.regular14,
           children: [
             TextSpan(
               text: "Terms",
-              style: TextStyles.semiBold14.copyWith(
+              style: Theme.of(context).textStyles.semiBold14.copyWith(
                 color: ColorName.accent50,
               ),
             ),
-            const TextSpan(
+            TextSpan(
               text: ", ",
-              style: TextStyles.regular14,
+              style: Theme.of(context).textStyles.regular14,
             ),
             TextSpan(
               text: "Data policy",
-              style: TextStyles.semiBold14.copyWith(
+              style: Theme.of(context).textStyles.semiBold14.copyWith(
                 color: ColorName.accent50,
               ),
             ),
-            const TextSpan(
+            TextSpan(
               text: " and ",
-              style: TextStyles.regular14,
+              style: Theme.of(context).textStyles.regular14,
             ),
             TextSpan(
               text: "Cookies Policy",
-              style: TextStyles.semiBold14.copyWith(
+              style: Theme.of(context).textStyles.semiBold14.copyWith(
                 color: ColorName.accent50,
               ),
             ),
-            const TextSpan(
+            TextSpan(
               text: ".",
-              style: TextStyles.regular14,
+              style: Theme.of(context).textStyles.regular14,
             ),
           ]),
     );
@@ -200,7 +200,7 @@ class _SignUpForm extends StatelessWidget {
             },
             decoration: InputDecoration(
               hintText: "Fullname",
-              hintStyle: TextStyles.medium14.copyWith(
+              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
                 color: ColorName.neutral40,
               ),
               fillColor: ColorName.neutral5,
@@ -226,7 +226,7 @@ class _SignUpForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: "Email",
-              hintStyle: TextStyles.medium14.copyWith(
+              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
                 color: ColorName.neutral40,
               ),
               fillColor: ColorName.neutral5,
@@ -256,7 +256,7 @@ class _SignUpForm extends StatelessWidget {
             obscureText: true,
             decoration: InputDecoration(
               hintText: "Password",
-              hintStyle: TextStyles.medium14.copyWith(
+              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
                 color: ColorName.neutral40,
               ),
               fillColor: ColorName.neutral5,

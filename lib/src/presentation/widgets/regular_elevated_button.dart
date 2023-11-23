@@ -1,5 +1,5 @@
 import 'package:audio_book/gen/colors.gen.dart';
-import 'package:audio_book/src/constants/text_styles.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class RegularElevatedButton extends StatelessWidget {
@@ -37,9 +37,7 @@ class RegularElevatedButton extends StatelessWidget {
       child: text != null
           ? Text(
               text!,
-              style: style ?? TextStyles.medium16.copyWith(
-                color: ColorName.white,
-              ),
+              style: style ?? Theme.of(context).textStyles.medium16.copyWith(color: ColorName.white,)
             )
           : child,
     );
