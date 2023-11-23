@@ -1,5 +1,6 @@
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_email.dart';
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_finish.dart';
+import 'package:audio_book/src/presentation/pages/main_page/main_page.dart';
 import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
@@ -58,7 +59,7 @@ Route generateRoute(Pages page, {Object? argument}) {
     case Pages.mainPage:
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
-        return Container(color: Colors.amber,);
+        return const MainPage();
       });
     default:
       return _buildMaterialRoute(
