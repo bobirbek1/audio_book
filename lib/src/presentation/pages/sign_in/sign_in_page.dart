@@ -74,9 +74,10 @@ class SignInPage extends StatelessWidget {
                     },
                     text: "Forget Password?",
                     textStyle: Theme.of(context).textStyles.semiBold14.copyWith(
-                      color: ColorName.accent50,
-                    ),
+                          color: ColorName.accent50,
+                        ),
                     foregroundColor: ColorName.accent50,
+                    size: const Size(100, 20),
                   ),
                 ],
               ),
@@ -107,8 +108,8 @@ class SignInPage extends StatelessWidget {
                     TextSpan(
                       text: "Register",
                       style: Theme.of(context).textStyles.semiBold14.copyWith(
-                        color: ColorName.accent50,
-                      ),
+                            color: ColorName.accent50,
+                          ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           Navigator.push(context, generateRoute(Pages.signUp));
@@ -278,17 +279,8 @@ class _SignInForm extends StatelessWidget {
               return "Please enter your email";
             },
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Email",
-              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
-                color: ColorName.neutral40,
-              ),
-              fillColor: ColorName.neutral5,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
           const SizedBox(
@@ -308,17 +300,8 @@ class _SignInForm extends StatelessWidget {
               return "Password must include letters,numbers";
             },
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Password",
-              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
-                color: ColorName.neutral40,
-              ),
-              fillColor: ColorName.neutral5,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
         ],

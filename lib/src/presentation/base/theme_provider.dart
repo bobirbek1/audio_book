@@ -12,16 +12,19 @@ class ThemeProvider extends ChangeNotifier {
     brightness: Brightness.light,
     fontFamily: GoogleFonts.poppins().fontFamily,
     scaffoldBackgroundColor: ColorName.white,
-    elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
-        backgroundColor:  ColorName.primary50,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: ColorName.primary50,
         minimumSize: const Size.fromHeight(56),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             8,
           ),
         ),
-      ),),
-    outlinedButtonTheme: OutlinedButtonThemeData(style: OutlinedButton.styleFrom(
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
         foregroundColor: ColorName.primary50,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
@@ -32,9 +35,13 @@ class ThemeProvider extends ChangeNotifier {
           color: ColorName.primary50,
           width: 1,
         ),
-        minimumSize: const Size.fromHeight(56,),
-      ),), 
-      textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(
+        minimumSize: const Size.fromHeight(
+          56,
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             8,
@@ -42,7 +49,19 @@ class ThemeProvider extends ChangeNotifier {
         ),
         minimumSize: const Size.fromHeight(56),
         foregroundColor: ColorName.primary50,
-      ),), 
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: LightTextStyles().medium14.copyWith(
+                color: ColorName.neutral40,
+              ),
+      fillColor: ColorName.neutral5 ,
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide.none,
+      )
+    ),
   );
 
   final _dark = ThemeData(
@@ -66,7 +85,6 @@ class ThemeProvider extends ChangeNotifier {
 }
 
 extension TextStylesProvider on ThemeData {
-  TextStyles get textStyles => brightness == Brightness.light
-      ? LightTextStyles()
-      : DarkTextStyles();
+  TextStyles get textStyles =>
+      brightness == Brightness.light ? LightTextStyles() : DarkTextStyles();
 }

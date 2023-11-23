@@ -198,17 +198,8 @@ class _SignUpForm extends StatelessWidget {
               }
               return "Please enter your fullname";
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Fullname",
-              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
-                color: ColorName.neutral40,
-              ),
-              fillColor: ColorName.neutral5,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
           const SizedBox(
@@ -224,17 +215,8 @@ class _SignUpForm extends StatelessWidget {
               return "Please enter your email";
             },
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Email",
-              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
-                color: ColorName.neutral40,
-              ),
-              fillColor: ColorName.neutral5,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
           const SizedBox(
@@ -254,17 +236,8 @@ class _SignUpForm extends StatelessWidget {
               return "Password must include letters,numbers";
             },
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Password",
-              hintStyle: Theme.of(context).textStyles.medium14.copyWith(
-                color: ColorName.neutral40,
-              ),
-              fillColor: ColorName.neutral5,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
         ],
