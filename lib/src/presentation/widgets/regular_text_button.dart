@@ -6,7 +6,7 @@ class RegularTextButton extends StatelessWidget {
   final String? text;
   final Widget? child;
   final VoidCallback? onPressed;
-  final double radius;
+  final double? radius;
   final Size? size;
   final Color? foregroundColor;
   final TextStyle? textStyle;
@@ -14,7 +14,7 @@ class RegularTextButton extends StatelessWidget {
       {required this.onPressed,
       this.text,
       this.child,
-      this.radius = 8,
+      this.radius,
       this.size,
       this.foregroundColor,
       this.textStyle,
@@ -23,21 +23,29 @@ class RegularTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customStyle = TextButton.styleFrom(
+      shape: radius != null ? RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          radius!,
+        ),
+      ) : null,
+      minimumSize: size,
+      foregroundColor: foregroundColor,
+    );
     return TextButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            radius,
-          ),
-        ),
-        minimumSize: size,
-        foregroundColor: foregroundColor ?? ColorName.primary50,
+      style: Theme.of(context).textButtonTheme.style?.copyWith(
+        shape: customStyle.shape,
+        minimumSize: customStyle.minimumSize,
+        foregroundColor: customStyle.foregroundColor,
       ),
       child: child ??
           Text(
             text ?? "",
-            style: textStyle ?? Theme.of(context).textStyles.medium16.copyWith(color: ColorName.primary50,),
+            style: textStyle ??
+                Theme.of(context).textStyles.medium16.copyWith(
+                      color: ColorName.primary50,
+                    ),
           ),
     );
   }

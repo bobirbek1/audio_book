@@ -23,22 +23,24 @@ class RegularElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customStyle = ElevatedButton.styleFrom(
+      backgroundColor: backgroundColor,
+      minimumSize: size,
+      shape:  radius != null ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius!,),) : null,
+    );
     return ElevatedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? ColorName.primary50,
-        minimumSize: size,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            radius ?? 8,
-          ),
-        ),
+      style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+        backgroundColor: customStyle.backgroundColor,
+        minimumSize: customStyle.minimumSize,
+        shape: customStyle.shape,
       ),
       child: text != null
-          ? Text(
-              text!,
-              style: style ?? Theme.of(context).textStyles.medium16.copyWith(color: ColorName.white,)
-            )
+          ? Text(text!,
+              style: style ??
+                  Theme.of(context).textStyles.medium16.copyWith(
+                        color: ColorName.white,
+                      ))
           : child,
     );
   }

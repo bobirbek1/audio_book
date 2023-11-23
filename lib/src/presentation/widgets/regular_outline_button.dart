@@ -25,25 +25,38 @@ class RegularOutlineButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customStyle = OutlinedButton.styleFrom(
+      foregroundColor: foregroundColor,
+      shape: radius != null
+          ? RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                radius!,
+              ),
+            )
+          : null,
+      side: borderColor != null
+          ? BorderSide(
+              color: borderColor!,
+              width: 1,
+            )
+          : null,
+      minimumSize: size,
+    );
     return OutlinedButton(
       onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: foregroundColor ?? ColorName.primary50,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            radius ?? 8,
+      style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
+            foregroundColor: customStyle.foregroundColor,
+            shape: customStyle.shape,
+            side: customStyle.side,
+            minimumSize: customStyle.maximumSize,
           ),
-        ),
-        side: BorderSide(
-          color: borderColor ?? ColorName.primary50,
-          width: 1,
-        ),
-        minimumSize: size,
-      ),
       child: child ??
           Text(
             text ?? "",
-            style: textStyle ?? Theme.of(context).textStyles.medium16.copyWith(color: ColorName.primary50,),
+            style: textStyle ??
+                Theme.of(context).textStyles.medium16.copyWith(
+                      color: ColorName.primary50,
+                    ),
           ),
     );
   }
