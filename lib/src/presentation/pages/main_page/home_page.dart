@@ -1,20 +1,12 @@
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:flutter/material.dart';
-
-const categoires = [
-  "Art",
-  "Business",
-  "Comedy",
-  "Drama",
-  "Personal",
-  "Photography",
-  "Music"
-];
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -33,19 +25,21 @@ class HomePage extends StatelessWidget {
           ),
           SizedBox(
             height: 40,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 18,
-              ),
-              children: categoires
-                  .map(
-                    (e) => _TabItem(
-                      text: e,
-                      onPressed: () {},
-                    ),
-                  )
-                  .toList(),
+            child: Consumer<CategoryViewModel>(
+              builder: (context,value,child) => ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                ),
+                children: value.categories
+                    .map(
+                      (e) => _TabItem(
+                        text: e.name ?? "Unknown",
+                        onPressed: () {},
+                      ),
+                    )
+                    .toList(),
+              ), 
             ),
           ),
           const SizedBox(
