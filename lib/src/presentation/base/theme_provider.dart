@@ -12,6 +12,8 @@ class ThemeProvider extends ChangeNotifier {
       brightness: Brightness.light,
       fontFamily: GoogleFonts.poppins().fontFamily,
       scaffoldBackgroundColor: ColorName.white,
+      colorScheme:
+          const ColorScheme.light().copyWith(background: ColorName.neutral5),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: ColorName.primary50,
@@ -75,11 +77,12 @@ class ThemeProvider extends ChangeNotifier {
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: LightTextStyles().medium16,
-      )
-      );
+      ));
 
   final _dark = ThemeData(
     brightness: Brightness.dark,

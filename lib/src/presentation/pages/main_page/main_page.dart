@@ -80,10 +80,10 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: DecoratedBox(
         decoration: const BoxDecoration(boxShadow: [
           BoxShadow(
-            color: ColorName.neutral10,
-            blurRadius: 8,
+            color: Colors.black12,
+            blurRadius: 12,
             spreadRadius: 6,
-            offset: Offset(0, -2),
+            offset: Offset(0, -1),
           )
         ]),
         child: BottomNavigationBar(
