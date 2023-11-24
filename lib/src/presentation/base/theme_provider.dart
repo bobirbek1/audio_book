@@ -72,7 +72,14 @@ class ThemeProvider extends ChangeNotifier {
         unselectedLabelStyle: LightTextStyles().regular10.copyWith(
               color: ColorName.neutral60,
             ),
-      ));
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: LightTextStyles().medium16,
+      )
+      );
 
   final _dark = ThemeData(
     brightness: Brightness.dark,

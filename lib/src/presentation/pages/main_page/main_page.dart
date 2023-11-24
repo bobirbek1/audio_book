@@ -1,5 +1,6 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
+import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/pages/main_page/home_page.dart';
 import 'package:audio_book/src/presentation/pages/main_page/library_page.dart';
 import 'package:audio_book/src/presentation/pages/main_page/search_page.dart';
@@ -19,6 +20,57 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 68,
+        centerTitle: false,
+        leading: Row(
+          children: [
+            const SizedBox(
+              width: 28,
+            ),
+            Assets.images.logo.svg(
+              width: 40,
+              height: 40,
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Assets.icons.setting.svg(
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                ColorName.primary50,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+        ],
+        title: RichText(
+            text: TextSpan(
+                text: "Audio",
+                style: Theme.of(context)
+                    .textStyles
+                    .bold24
+                    .copyWith(color: ColorName.primary50),
+                children: [
+              TextSpan(
+                text: "Books",
+                style: Theme.of(context)
+                    .textStyles
+                    .light24
+                    .copyWith(color: ColorName.primary50),
+              ),
+              TextSpan(
+                text: ".",
+                style: Theme.of(context)
+                    .textStyles
+                    .bold24
+                    .copyWith(color: ColorName.accent50),
+              ),
+            ])),
+      ),
       body: switch (_currentIndex) {
         0 => const HomePage(),
         1 => const SearchPage(),
