@@ -18,7 +18,6 @@ class BookViewModel extends ChangeNotifier {
 
   RecommendedBooksState get recommendedState => _recommendedBooksState;
 
-  
   BestSellerBooksState _bestSellerBooksState =
       BestSellerBooksState(state: BaseState.initial);
 
@@ -33,6 +32,11 @@ class BookViewModel extends ChangeNotifier {
       TrendingBooksState(state: BaseState.initial);
 
   TrendingBooksState get trendingState => _trendingBooksState;
+
+  BooksByCategoryState _booksByCategoryState =
+      BooksByCategoryState(state: BaseState.initial);
+
+  BooksByCategoryState get booksByCategoryState => _booksByCategoryState;
 
   void fetchRecommendedBooks() async {
     try {
@@ -140,6 +144,33 @@ class BookViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void fetchBooksByCategory(String categoryId) async {
+    try {
+      _booksByCategoryState = BooksByCategoryState(state: BaseState.loading);
+      notifyListeners();
+      final books = <BookModel>[];
+      final data = await _db
+          .collection("books")
+          .where("categories", arrayContains: categoryId)
+          .orderBy("created_at", descending: true)
+          .get();
+      for (var doc in data.docs) {
+        final book = BookModel.fromJson(doc.data());
+        books.add(book);
+      }
+      print("books by category: $books");
+      _booksByCategoryState =
+          BooksByCategoryState(state: BaseState.loaded, books: books);
+    } catch (e) {
+      print("exception occured while fetching books by category: $e");
+      _booksByCategoryState = BooksByCategoryState(
+          state: BaseState.error,
+          error: "Unknown error occurred while fetching books by category");
+    } finally {
+      notifyListeners();
+    }
+  }
 }
 
 class RecommendedBooksState {
@@ -168,4 +199,11 @@ class TrendingBooksState {
   final List<BookModel>? books;
   final String? error;
   TrendingBooksState({required this.state, this.books, this.error});
+}
+
+class BooksByCategoryState {
+  final BaseState state;
+  final List<BookModel>? books;
+  final String? error;
+  BooksByCategoryState({required this.state, this.books, this.error});
 }

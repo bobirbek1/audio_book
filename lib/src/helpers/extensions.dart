@@ -15,3 +15,9 @@ extension SnackBarExtension on BuildContext {
     });
   }
 }
+
+extension ArgumentHelper on BuildContext {
+  T getArguments<T>() {
+    return ModalRoute.of(this)?.settings.arguments as T;
+  }
+}

@@ -37,9 +37,20 @@ class HomePage extends StatelessWidget {
                 ),
                 children: value.categories
                     .map(
-                      (e) => _TabItem(
-                        text: e.name ?? "Unknown",
-                        onPressed: () {},
+                      (cat) => _TabItem(
+                        text: cat.name ?? "Unknown",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            generateRoute(
+                              Pages.booksByCategoryPage,
+                              argument: {
+                                "category": cat.name,
+                                "category_id": cat.id,
+                              },
+                            ),
+                          );
+                        },
                       ),
                     )
                     .toList(),
