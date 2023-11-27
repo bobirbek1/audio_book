@@ -1,5 +1,7 @@
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
+import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
@@ -26,7 +28,7 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: 40,
             child: Consumer<CategoryViewModel>(
-              builder: (context,value,child) => ListView(
+              builder: (context, value, child) => ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 18,
@@ -39,31 +41,42 @@ class HomePage extends StatelessWidget {
                       ),
                     )
                     .toList(),
-              ), 
+              ),
             ),
           ),
           const SizedBox(
             height: 24,
           ),
-          _TitleWidget(title: "Recomended For You", onSeeMore: () {}),
-          const SizedBox(
-            height: 8,
-          ),
-          SizedBox(
-            height: 300,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: List.generate(
-                  10,
-                  (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        color: Colors.cyan,
-                        width: 200,
-                        height: 300,
-                      )),
-            ),
-          ),
+          Consumer<BookViewModel>(builder: (ctx, vm, child) {
+            return switch (vm.recommendedState.state) {
+              BaseState.loading => const CircularProgressIndicator.adaptive(),
+              BaseState.loaded => Column(
+                  children: [
+                    _TitleWidget(title: "Recomended For You", onSeeMore: () {}),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    SizedBox(
+                      height: 300,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        children: List.generate(
+                            10,
+                            (index) => Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  color: Colors.cyan,
+                                  width: 200,
+                                  height: 300,
+                                )),
+                      ),
+                    ),
+                  ],
+                ),
+              _ => const SizedBox(),
+            };
+          }),
           const SizedBox(
             height: 24,
           ),
