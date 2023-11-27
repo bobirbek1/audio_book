@@ -7,20 +7,22 @@ class BookItem extends StatelessWidget {
   final String? title;
   final String? author;
   final String? imageUrl;
+  final double? imageWidth;
+  final double? imageHeight;
   const BookItem(
-      {required this.title, required this.imageUrl, this.author, super.key});
+      {required this.title, required this.imageUrl, this.author, this.imageWidth,this.imageHeight, super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 160,
+      width: imageWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RegularCachedImage(
             imageUrl: imageUrl,
-            width: 160,
-            height: 160,
+            width: imageWidth,
+            height: imageHeight,
             fit: BoxFit.cover,
           ),
           const SizedBox(

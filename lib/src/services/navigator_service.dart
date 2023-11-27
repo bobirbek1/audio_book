@@ -1,3 +1,7 @@
+import 'package:audio_book/src/presentation/pages/books_list_pages/best_seller_books_page.dart';
+import 'package:audio_book/src/presentation/pages/books_list_pages/latest_books_page.dart';
+import 'package:audio_book/src/presentation/pages/books_list_pages/recommended_books_page.dart';
+import 'package:audio_book/src/presentation/pages/books_list_pages/trending_books_page.dart';
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_email.dart';
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_finish.dart';
 import 'package:audio_book/src/presentation/pages/main_page/main_page.dart';
@@ -18,6 +22,10 @@ enum Pages {
   forgetPasswordEmail,
   forgetPasswordFinish,
   mainPage,
+  recommendedBooksPage,
+  bestSellerBooksPage,
+  latestBooksPage,
+  trendingBooksPage,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -60,6 +68,26 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return const MainPage();
+      });
+    case Pages.recommendedBooksPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const RecommendedBooksPage();
+      });
+    case Pages.bestSellerBooksPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const BestSellerBooksPage();
+      });
+    case Pages.latestBooksPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const LatestBooksPage();
+      });
+    case Pages.trendingBooksPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const TrendingBooksPage();
       });
     default:
       return _buildMaterialRoute(

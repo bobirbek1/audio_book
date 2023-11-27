@@ -8,6 +8,7 @@ import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +81,16 @@ class _RecommendedBooks extends StatelessWidget {
       BaseState.loading => const CircularProgressIndicator.adaptive(),
       BaseState.loaded => Column(
           children: [
-            _TitleWidget(title: "Recomended For You", onSeeMore: () {}),
+            _TitleWidget(
+                title: "Recomended For You",
+                onSeeMore: () {
+                  Navigator.push(
+                    context,
+                    generateRoute(
+                      Pages.recommendedBooksPage,
+                    ),
+                  );
+                }),
             const SizedBox(
               height: 8,
             ),
@@ -123,7 +133,10 @@ class _BestSellerBooks extends StatelessWidget {
       BaseState.loading => const CircularProgressIndicator.adaptive(),
       BaseState.loaded => Column(
           children: [
-            _TitleWidget(title: "Best Seller", onSeeMore: () {}),
+            _TitleWidget(title: "Best Seller", onSeeMore: () {
+               Navigator.push(
+                      context, generateRoute(Pages.bestSellerBooksPage));
+            }),
             const SizedBox(
               height: 8,
             ),
@@ -163,7 +176,10 @@ class _LatestBooks extends StatelessWidget {
       BaseState.loading => const CircularProgressIndicator.adaptive(),
       BaseState.loaded => Column(
           children: [
-            _TitleWidget(title: "New Releases", onSeeMore: () {}),
+            _TitleWidget(title: "New Releases", onSeeMore: () {
+               Navigator.push(
+                      context, generateRoute(Pages.latestBooksPage));
+            }),
             const SizedBox(
               height: 8,
             ),
@@ -179,6 +195,8 @@ class _LatestBooks extends StatelessWidget {
                             child: BookItem(
                               title: book.name,
                               imageUrl: book.photo,
+                              imageWidth: 160,
+                              imageHeight: 160,
                             ),
                           ),
                         )
@@ -203,7 +221,12 @@ class _TrendingNow extends StatelessWidget {
       BaseState.loading => const CircularProgressIndicator.adaptive(),
       BaseState.loaded => Column(
           children: [
-            _TitleWidget(title: "Trending Now", onSeeMore: () {}),
+            _TitleWidget(
+                title: "Trending Now",
+                onSeeMore: () {
+                  Navigator.push(
+                      context, generateRoute(Pages.trendingBooksPage));
+                }),
             const SizedBox(
               height: 8,
             ),
@@ -219,6 +242,8 @@ class _TrendingNow extends StatelessWidget {
                             child: BookItem(
                               title: book.name,
                               imageUrl: book.photo,
+                              imageWidth: 160,
+                              imageHeight: 160,
                             ),
                           ),
                         )

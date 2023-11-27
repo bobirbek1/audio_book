@@ -23,6 +23,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow_down_square.svg
   SvgGenImage get arrowDownSquare => const SvgGenImage('assets/icons/arrow_down_square.svg');
 
+  /// File path: assets/icons/arrow_left.svg
+  SvgGenImage get arrowLeft => const SvgGenImage('assets/icons/arrow_left.svg');
+
   /// File path: assets/icons/arrow_left_circle.svg
   SvgGenImage get arrowLeftCircle => const SvgGenImage('assets/icons/arrow_left_circle.svg');
 
@@ -106,6 +109,7 @@ class $AssetsIconsGen {
         activity,
         arrowDown,
         arrowDownSquare,
+        arrowLeft,
         arrowLeftCircle,
         arrowRightCircle,
         bookmark,
