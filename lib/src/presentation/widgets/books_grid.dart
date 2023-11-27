@@ -25,6 +25,7 @@ class BooksGrid extends StatelessWidget {
           title: book.name,
           imageUrl: book.photo,
           author: book.author,
+          width: double.infinity,
         );
       },
     );

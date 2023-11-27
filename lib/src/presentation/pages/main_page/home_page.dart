@@ -133,10 +133,12 @@ class _BestSellerBooks extends StatelessWidget {
       BaseState.loading => const CircularProgressIndicator.adaptive(),
       BaseState.loaded => Column(
           children: [
-            _TitleWidget(title: "Best Seller", onSeeMore: () {
-               Navigator.push(
+            _TitleWidget(
+                title: "Best Seller",
+                onSeeMore: () {
+                  Navigator.push(
                       context, generateRoute(Pages.bestSellerBooksPage));
-            }),
+                }),
             const SizedBox(
               height: 8,
             ),
@@ -176,10 +178,11 @@ class _LatestBooks extends StatelessWidget {
       BaseState.loading => const CircularProgressIndicator.adaptive(),
       BaseState.loaded => Column(
           children: [
-            _TitleWidget(title: "New Releases", onSeeMore: () {
-               Navigator.push(
-                      context, generateRoute(Pages.latestBooksPage));
-            }),
+            _TitleWidget(
+                title: "New Releases",
+                onSeeMore: () {
+                  Navigator.push(context, generateRoute(Pages.latestBooksPage));
+                }),
             const SizedBox(
               height: 8,
             ),
@@ -195,8 +198,8 @@ class _LatestBooks extends StatelessWidget {
                             child: BookItem(
                               title: book.name,
                               imageUrl: book.photo,
-                              imageWidth: 160,
-                              imageHeight: 160,
+                              width: 160,
+                              height: 220,
                             ),
                           ),
                         )
@@ -242,8 +245,8 @@ class _TrendingNow extends StatelessWidget {
                             child: BookItem(
                               title: book.name,
                               imageUrl: book.photo,
-                              imageWidth: 160,
-                              imageHeight: 160,
+                              width: 160,
+                              height: 220,
                             ),
                           ),
                         )
