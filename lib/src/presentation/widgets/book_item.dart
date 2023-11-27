@@ -1,11 +1,14 @@
 import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:flutter/material.dart';
 
 class BookItem extends StatelessWidget {
   final String? title;
   final String? author;
-  const BookItem({required this.title, this.author, super.key});
+  final String? imageUrl;
+  const BookItem(
+      {required this.title, required this.imageUrl, this.author, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +17,11 @@ class BookItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          RegularCachedImage(
+            imageUrl: imageUrl,
+            width: 160,
             height: 160,
-            color: Colors.green,
+            fit: BoxFit.cover,
           ),
           const SizedBox(
             height: 12,

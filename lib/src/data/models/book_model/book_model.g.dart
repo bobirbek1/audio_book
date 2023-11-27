@@ -14,6 +14,7 @@ _$BookImpl _$$BookImplFromJson(Map<String, dynamic> json) => _$BookImpl(
       photo: json['photo'] as String?,
       fileUrl: json['file_url'] as String?,
       rating: (json['rating'] as num?)?.toDouble(),
+      listeners: json['listeners'] as int?,
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -31,6 +32,7 @@ Map<String, dynamic> _$$BookImplToJson(_$BookImpl instance) =>
       'photo': instance.photo,
       'file_url': instance.fileUrl,
       'rating': instance.rating,
+      'listeners': instance.listeners,
       'categories': instance.categories,
       'audio_urls': instance.audioUrls,
     };

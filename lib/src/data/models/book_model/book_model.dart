@@ -18,6 +18,7 @@ class BookModel with _$BookModel {
     @JsonKey(name: "file_url")
     String? fileUrl,
     double? rating,
+    int? listeners,
     List<String>? categories,
     @JsonKey(name: "audio_urls")
     List<AudioModel>? audioUrls,

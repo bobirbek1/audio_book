@@ -48,113 +48,188 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          Consumer<BookViewModel>(builder: (ctx, vm, child) {
-            return switch (vm.recommendedState.state) {
-              BaseState.loading => const CircularProgressIndicator.adaptive(),
-              BaseState.loaded => Column(
-                  children: [
-                    _TitleWidget(title: "Recomended For You", onSeeMore: () {}),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    SizedBox(
-                      height: 300,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        children: vm.recommendedState.books
-                                ?.map(
-                                  (book) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: RegularCachedImage(
-                                      imageUrl: book.photo,
-                                      width: 200,
-                                      height: 300,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                )
-                                .toList() ??
-                            [],
-                      ),
-                    ),
-                  ],
-                ),
-              _ => const SizedBox(),
-            };
-          }),
+          const _RecommendedBooks(),
           const SizedBox(
             height: 24,
           ),
-          _TitleWidget(
-            title: "Best Seller",
-            onSeeMore: () {},
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          SizedBox(
-            height: 144,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: List.generate(
-                10,
-                (index) => const _HorizontalBookItem(
-                  listenersCount: 1000,
-                ),
-              ),
-            ),
-          ),
+          const _BestSellerBooks(),
           const SizedBox(
             height: 24,
           ),
-          _TitleWidget(
-            title: "New Releases",
-            onSeeMore: () {},
-          ),
-          SizedBox(
-            height: 220,
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              scrollDirection: Axis.horizontal,
-              children: List.generate(
-                10,
-                (index) => const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: BookItem(title: "The Black Witch"),
-                ),
-              ),
-            ),
-          ),
+          const _LatestBooks(),
           const SizedBox(
             height: 24,
           ),
-          _TitleWidget(
-            title: "Trending now",
-            onSeeMore: () {},
-          ),
-          SizedBox(
-            height: 220,
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              scrollDirection: Axis.horizontal,
-              children: List.generate(
-                10,
-                (index) => const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: BookItem(title: "The Black Witch"),
-                ),
-              ),
-            ),
-          ),
+          const _TrendingNow(),
           const SizedBox(
             height: 48,
           ),
         ],
       ),
     );
+  }
+}
+
+class _RecommendedBooks extends StatelessWidget {
+  const _RecommendedBooks();
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<BookViewModel>();
+    return switch (vm.recommendedState.state) {
+      BaseState.loading => const CircularProgressIndicator.adaptive(),
+      BaseState.loaded => Column(
+          children: [
+            _TitleWidget(title: "Recomended For You", onSeeMore: () {}),
+            const SizedBox(
+              height: 8,
+            ),
+            SizedBox(
+              height: 300,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: vm.recommendedState.books
+                        ?.map(
+                          (book) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: RegularCachedImage(
+                              imageUrl: book.photo,
+                              width: 200,
+                              height: 300,
+                              fit: BoxFit.cover,
+                              isSquare: false,
+                            ),
+                          ),
+                        )
+                        .toList() ??
+                    [],
+              ),
+            ),
+          ],
+        ),
+      _ => const SizedBox(),
+    };
+  }
+}
+
+class _BestSellerBooks extends StatelessWidget {
+  const _BestSellerBooks();
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<BookViewModel>();
+    return switch (vm.bestSellerState.state) {
+      BaseState.loading => const CircularProgressIndicator.adaptive(),
+      BaseState.loaded => Column(
+          children: [
+            _TitleWidget(title: "Best Seller", onSeeMore: () {}),
+            const SizedBox(
+              height: 8,
+            ),
+            SizedBox(
+              height: 144,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: vm.bestSellerState.books
+                        ?.map(
+                          (book) => _HorizontalBookItem(
+                            name: book.name,
+                            author: book.author,
+                            image: book.photo,
+                            rating: book.rating,
+                            listenersCount: book.listeners,
+                          ),
+                        )
+                        .toList() ??
+                    [],
+              ),
+            ),
+          ],
+        ),
+      _ => const SizedBox(),
+    };
+  }
+}
+
+class _LatestBooks extends StatelessWidget {
+  const _LatestBooks();
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<BookViewModel>();
+    return switch (vm.latestState.state) {
+      BaseState.loading => const CircularProgressIndicator.adaptive(),
+      BaseState.loaded => Column(
+          children: [
+            _TitleWidget(title: "New Releases", onSeeMore: () {}),
+            const SizedBox(
+              height: 8,
+            ),
+            SizedBox(
+              height: 220,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                scrollDirection: Axis.horizontal,
+                children: vm.latestState.books
+                        ?.map(
+                          (book) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: BookItem(
+                              title: book.name,
+                              imageUrl: book.photo,
+                            ),
+                          ),
+                        )
+                        .toList() ??
+                    [],
+              ),
+            ),
+          ],
+        ),
+      _ => const SizedBox(),
+    };
+  }
+}
+
+class _TrendingNow extends StatelessWidget {
+  const _TrendingNow();
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<BookViewModel>();
+    return switch (vm.trendingState.state) {
+      BaseState.loading => const CircularProgressIndicator.adaptive(),
+      BaseState.loaded => Column(
+          children: [
+            _TitleWidget(title: "Trending Now", onSeeMore: () {}),
+            const SizedBox(
+              height: 8,
+            ),
+            SizedBox(
+              height: 220,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                scrollDirection: Axis.horizontal,
+                children: vm.trendingState.books
+                        ?.map(
+                          (book) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: BookItem(
+                              title: book.name,
+                              imageUrl: book.photo,
+                            ),
+                          ),
+                        )
+                        .toList() ??
+                    [],
+              ),
+            ),
+          ],
+        ),
+      _ => const SizedBox(),
+    };
   }
 }
 
@@ -186,13 +261,11 @@ class _HorizontalBookItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
+          RegularCachedImage(
+            imageUrl: image,
             width: 120,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.deepOrange,
-              borderRadius: BorderRadius.circular(4),
-            ),
+            height: 120,
+            fit: BoxFit.cover,
           ),
           const SizedBox(
             width: 16,
@@ -223,7 +296,7 @@ class _HorizontalBookItem extends StatelessWidget {
                   size: 20,
                 ),
                 Text(
-                  "$listenersCount+ Listeners",
+                  "${listenersCount ?? 100}+ Listeners",
                   style: Theme.of(context)
                       .textStyles
                       .regular12

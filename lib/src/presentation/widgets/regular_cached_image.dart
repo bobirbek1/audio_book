@@ -7,8 +7,9 @@ class RegularCachedImage extends StatelessWidget {
   final BoxFit? fit;
   final double? width;
   final double? height;
+  final bool isSquare;
   const RegularCachedImage(
-      {required this.imageUrl, this.width, this.height, this.fit, super.key});
+      {required this.imageUrl, this.width, this.height, this.fit,this.isSquare = true, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +19,25 @@ class RegularCachedImage extends StatelessWidget {
       height: height,
       fit: fit,
       errorWidget: (ctx, imageUrl, e) {
-        return Assets.images.imagePlaceholder400x600.image(
-          width: width,height: height,fit: fit,
+        return isSquare ? Assets.images.imagePlaceholder240x240.image(
+          width: width,
+          height: height,
+          fit: fit,
+        ) : Assets.images.imagePlaceholder400x600.image(
+          width: width,
+          height: height,
+          fit: fit,
         );
       },
       placeholder: (ctx, imageUrl) {
-        return Assets.images.imagePlaceholder400x600.image(
-          width: width,height: height,fit: fit,
+        return isSquare ? Assets.images.imagePlaceholder240x240.image(
+          width: width,
+          height: height,
+          fit: fit,
+        ) : Assets.images.imagePlaceholder400x600.image(
+          width: width,
+          height: height,
+          fit: fit,
         );
       },
     );

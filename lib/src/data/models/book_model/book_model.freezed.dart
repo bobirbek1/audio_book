@@ -28,6 +28,7 @@ mixin _$BookModel {
   @JsonKey(name: "file_url")
   String? get fileUrl => throw _privateConstructorUsedError;
   double? get rating => throw _privateConstructorUsedError;
+  int? get listeners => throw _privateConstructorUsedError;
   List<String>? get categories => throw _privateConstructorUsedError;
   @JsonKey(name: "audio_urls")
   List<AudioModel>? get audioUrls => throw _privateConstructorUsedError;
@@ -51,6 +52,7 @@ abstract class $BookModelCopyWith<$Res> {
       String? photo,
       @JsonKey(name: "file_url") String? fileUrl,
       double? rating,
+      int? listeners,
       List<String>? categories,
       @JsonKey(name: "audio_urls") List<AudioModel>? audioUrls});
 }
@@ -75,6 +77,7 @@ class _$BookModelCopyWithImpl<$Res, $Val extends BookModel>
     Object? photo = freezed,
     Object? fileUrl = freezed,
     Object? rating = freezed,
+    Object? listeners = freezed,
     Object? categories = freezed,
     Object? audioUrls = freezed,
   }) {
@@ -107,6 +110,10 @@ class _$BookModelCopyWithImpl<$Res, $Val extends BookModel>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double?,
+      listeners: freezed == listeners
+          ? _value.listeners
+          : listeners // ignore: cast_nullable_to_non_nullable
+              as int?,
       categories: freezed == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -134,6 +141,7 @@ abstract class _$$BookImplCopyWith<$Res> implements $BookModelCopyWith<$Res> {
       String? photo,
       @JsonKey(name: "file_url") String? fileUrl,
       double? rating,
+      int? listeners,
       List<String>? categories,
       @JsonKey(name: "audio_urls") List<AudioModel>? audioUrls});
 }
@@ -155,6 +163,7 @@ class __$$BookImplCopyWithImpl<$Res>
     Object? photo = freezed,
     Object? fileUrl = freezed,
     Object? rating = freezed,
+    Object? listeners = freezed,
     Object? categories = freezed,
     Object? audioUrls = freezed,
   }) {
@@ -187,6 +196,10 @@ class __$$BookImplCopyWithImpl<$Res>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double?,
+      listeners: freezed == listeners
+          ? _value.listeners
+          : listeners // ignore: cast_nullable_to_non_nullable
+              as int?,
       categories: freezed == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -210,6 +223,7 @@ class _$BookImpl implements _Book {
       this.photo,
       @JsonKey(name: "file_url") this.fileUrl,
       this.rating,
+      this.listeners,
       final List<String>? categories,
       @JsonKey(name: "audio_urls") final List<AudioModel>? audioUrls})
       : _categories = categories,
@@ -233,6 +247,8 @@ class _$BookImpl implements _Book {
   final String? fileUrl;
   @override
   final double? rating;
+  @override
+  final int? listeners;
   final List<String>? _categories;
   @override
   List<String>? get categories {
@@ -256,7 +272,7 @@ class _$BookImpl implements _Book {
 
   @override
   String toString() {
-    return 'BookModel(id: $id, name: $name, author: $author, description: $description, photo: $photo, fileUrl: $fileUrl, rating: $rating, categories: $categories, audioUrls: $audioUrls)';
+    return 'BookModel(id: $id, name: $name, author: $author, description: $description, photo: $photo, fileUrl: $fileUrl, rating: $rating, listeners: $listeners, categories: $categories, audioUrls: $audioUrls)';
   }
 
   @override
@@ -272,6 +288,8 @@ class _$BookImpl implements _Book {
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
             (identical(other.rating, rating) || other.rating == rating) &&
+            (identical(other.listeners, listeners) ||
+                other.listeners == listeners) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             const DeepCollectionEquality()
@@ -289,6 +307,7 @@ class _$BookImpl implements _Book {
       photo,
       fileUrl,
       rating,
+      listeners,
       const DeepCollectionEquality().hash(_categories),
       const DeepCollectionEquality().hash(_audioUrls));
 
@@ -315,6 +334,7 @@ abstract class _Book implements BookModel {
           final String? photo,
           @JsonKey(name: "file_url") final String? fileUrl,
           final double? rating,
+          final int? listeners,
           final List<String>? categories,
           @JsonKey(name: "audio_urls") final List<AudioModel>? audioUrls}) =
       _$BookImpl;
@@ -336,6 +356,8 @@ abstract class _Book implements BookModel {
   String? get fileUrl;
   @override
   double? get rating;
+  @override
+  int? get listeners;
   @override
   List<String>? get categories;
   @override
