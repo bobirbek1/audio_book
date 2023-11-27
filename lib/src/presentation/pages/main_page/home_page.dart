@@ -5,6 +5,7 @@ import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
+import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:flutter/material.dart';
@@ -61,15 +62,21 @@ class HomePage extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        children: List.generate(
-                            10,
-                            (index) => Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  color: Colors.cyan,
-                                  width: 200,
-                                  height: 300,
-                                )),
+                        children: vm.recommendedState.books
+                                ?.map(
+                                  (book) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: RegularCachedImage(
+                                      imageUrl: book.photo,
+                                      width: 200,
+                                      height: 300,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                .toList() ??
+                            [],
                       ),
                     ),
                   ],
