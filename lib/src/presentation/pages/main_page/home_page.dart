@@ -117,7 +117,7 @@ class _RecommendedBooks extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(context,
-                                    generateRoute(Pages.bookDetailPage));
+                                    generateRoute(Pages.bookDetailPage,argument: {"id": book.id,"name": book.name},),);
                               },
                               child: RegularCachedImage(
                                 imageUrl: book.photo,

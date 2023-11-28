@@ -38,6 +38,32 @@ class BookViewModel extends ChangeNotifier {
 
   BooksByCategoryState get booksByCategoryState => _booksByCategoryState;
 
+  BooksByIdState _booksByIdState = BooksByIdState(state: BaseState.initial);
+
+  BooksByIdState get bookByIdState => _booksByIdState;
+
+  void fetchBookById(String id) async {
+    try {
+      _booksByIdState = BooksByIdState(state: BaseState.loading);
+      notifyListeners();
+      final doc = await _db.doc("books/$id").get();
+      if (doc.exists) {
+        final book = BookModel.fromJson(doc.data()!);
+        _booksByIdState = BooksByIdState(state: BaseState.loaded, book: book);
+      } else {
+        _booksByIdState = BooksByIdState(
+            state: BaseState.error, error: "No book found by id: $id");
+      }
+    } catch (e) {
+      print("Exception occured while fetching book by id: $e");
+      _booksByIdState = BooksByIdState(
+          state: BaseState.error,
+          error: "Exception occured while fetching book by id!");
+    } finally {
+      notifyListeners();
+    }
+  }
+
   void fetchRecommendedBooks() async {
     try {
       _recommendedBooksState = RecommendedBooksState(state: BaseState.loading);
@@ -206,4 +232,11 @@ class BooksByCategoryState {
   final List<BookModel>? books;
   final String? error;
   BooksByCategoryState({required this.state, this.books, this.error});
+}
+
+class BooksByIdState {
+  final BaseState state;
+  final BookModel? book;
+  final String? error;
+  BooksByIdState({required this.state, this.book, this.error});
 }

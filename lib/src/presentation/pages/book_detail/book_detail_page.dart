@@ -1,121 +1,149 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
+import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailPage extends StatelessWidget {
   const BookDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final args = context.getArguments<Map<String, dynamic>?>();
+    Future.microtask(
+        () => context.read<BookViewModel>().fetchBookById(args?["id"] ?? ""));
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          iconSize: 24,
-          icon: Assets.icons.arrowLeft.svg(),
-        ),
-        centerTitle: true,
-        title: const Text(
-          "Name of book",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
             iconSize: 24,
-            icon: Assets.icons.more.svg(),
+            icon: Assets.icons.arrowLeft.svg(),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 24,
-              ),
-              const RegularCachedImage(
-                imageUrl: "",
-                height: 260,
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(
-                height: 28,
-              ),
-              Text(
-                "Book Name and some description about book so thas funny",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textStyles.medium20,
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                "Paolo Kenedi",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textStyles.regular16.copyWith(
-                      color: ColorName.neutral50,
-                    ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const _RatingBar(rating: 4),
-              const SizedBox(
-                height: 8,
-              ),
-              const _Categories(categories: [
-                "Fantasy",
-                "Drama",
-                "Comedy",
-                "Fantasy",
-                "Drama",
-                "Comedy",
-                "Fantasy",
-                "Drama",
-                "Comedy"
-              ]),
-              const SizedBox(
-                height: 32,
-              ),
-              _ActionButtons(
-                onPlayAudio: () {},
-                onReadBook: () {},
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
-                "Summary",
-                style: Theme.of(context).textStyles.semiBold14,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                "Some description",
-                style: Theme.of(context).textStyles.light12.copyWith(
-                      color: ColorName.neutral60,
-                    ),
-              ),
-            ],
+          centerTitle: true,
+          title: Text(
+            args?["name"] ?? "Name not found",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              iconSize: 24,
+              icon: Assets.icons.more.svg(),
+            ),
+          ],
         ),
-      ),
-    );
+        body: Consumer<BookViewModel>(
+          builder: (ctx, vm, child) {
+            return switch (vm.bookByIdState.state) {
+              BaseState.loading => const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              BaseState.error => Center(
+                  child: Text(
+                    vm.bookByIdState.error ??
+                        "Unknown exception occured, Please try again.",
+                  ),
+                ),
+              BaseState.loaded => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        RegularCachedImage(
+                          imageUrl: vm.bookByIdState.book?.photo,
+                          height: 260,
+                          width: double.infinity,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(
+                          height: 28,
+                        ),
+                        Text(
+                          vm.bookByIdState.book?.name ?? "Name not available",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textStyles.medium20,
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          vm.bookByIdState.book?.author ??
+                              "Author not available",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textStyles.regular16.copyWith(
+                                    color: ColorName.neutral50,
+                                  ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        _RatingBar(rating: vm.bookByIdState.book?.rating),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const _Categories(categories: [
+                          "Fantasy",
+                          "Drama",
+                          "Comedy",
+                          "Fantasy",
+                          "Drama",
+                          "Comedy",
+                          "Fantasy",
+                          "Drama",
+                          "Comedy"
+                        ]),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        _ActionButtons(
+                          onPlayAudio: () {},
+                          onReadBook: () {},
+                        ),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Text(
+                          "Summary",
+                          style: Theme.of(context).textStyles.semiBold14,
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          vm.bookByIdState.book?.description ??
+                              "No description available",
+                          style: Theme.of(context).textStyles.light12.copyWith(
+                                color: ColorName.neutral60,
+                              ),
+                        ),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              _ => const SizedBox(),
+            };
+          },
+        ));
   }
 }
 
