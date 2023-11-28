@@ -9,49 +9,54 @@ class BookItem extends StatelessWidget {
   final String? imageUrl;
   final double? width;
   final double? height;
+  final VoidCallback? onPressed;
   const BookItem(
       {required this.title,
       required this.imageUrl,
       this.author,
       this.width,
       this.height,
+      this.onPressed,
       super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: RegularCachedImage(
-              imageUrl: imageUrl,
-              width: width,
-              height: height,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: onPressed,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: RegularCachedImage(
+                imageUrl: imageUrl,
+                width: width,
+                height: height,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Text(
-            title ?? "No title",
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textStyles.medium16,
-          ),
-          if (author != null)
+            const SizedBox(
+              height: 12,
+            ),
             Text(
-              author!,
-              maxLines: 1,
-              style: Theme.of(context)
-                  .textStyles
-                  .regular12
-                  .copyWith(color: ColorName.primary50),
+              title ?? "No title",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textStyles.medium16,
             ),
-        ],
+            if (author != null)
+              Text(
+                author!,
+                maxLines: 1,
+                style: Theme.of(context)
+                    .textStyles
+                    .regular12
+                    .copyWith(color: ColorName.primary50),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -4,9 +4,9 @@ import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
+import 'package:audio_book/src/presentation/widgets/category_item.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
-import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
@@ -37,20 +37,23 @@ class HomePage extends StatelessWidget {
                 ),
                 children: value.categories
                     .map(
-                      (cat) => _TabItem(
-                        text: cat.name ?? "Unknown",
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            generateRoute(
-                              Pages.booksByCategoryPage,
-                              argument: {
-                                "category": cat.name,
-                                "category_id": cat.id,
-                              },
-                            ),
-                          );
-                        },
+                      (cat) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                        child: CategoryItem(
+                          text: cat.name ?? "Unknown",
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              generateRoute(
+                                Pages.booksByCategoryPage,
+                                argument: {
+                                  "category": cat.name,
+                                  "category_id": cat.id,
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     )
                     .toList(),
@@ -116,8 +119,16 @@ class _RecommendedBooks extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    generateRoute(Pages.bookDetailPage,argument: {"id": book.id,"name": book.name},),);
+                                Navigator.push(
+                                  context,
+                                  generateRoute(
+                                    Pages.bookDetailPage,
+                                    argument: {
+                                      "id": book.id,
+                                      "name": book.name
+                                    },
+                                  ),
+                                );
                               },
                               child: RegularCachedImage(
                                 imageUrl: book.photo,
@@ -172,6 +183,18 @@ class _BestSellerBooks extends StatelessWidget {
                             image: book.photo,
                             rating: book.rating,
                             listenersCount: book.listeners,
+                            onPressed: (){
+                               Navigator.push(
+                                  context,
+                                  generateRoute(
+                                    Pages.bookDetailPage,
+                                    argument: {
+                                      "id": book.id,
+                                      "name": book.name
+                                    },
+                                  ),
+                                );
+                            },
                           ),
                         )
                         .toList() ??
@@ -217,6 +240,18 @@ class _LatestBooks extends StatelessWidget {
                               imageUrl: book.photo,
                               width: 160,
                               height: 220,
+                              onPressed: (){
+                                 Navigator.push(
+                                  context,
+                                  generateRoute(
+                                    Pages.bookDetailPage,
+                                    argument: {
+                                      "id": book.id,
+                                      "name": book.name
+                                    },
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         )
@@ -264,6 +299,18 @@ class _TrendingNow extends StatelessWidget {
                               imageUrl: book.photo,
                               width: 160,
                               height: 220,
+                              onPressed: (){
+                                 Navigator.push(
+                                  context,
+                                  generateRoute(
+                                    Pages.bookDetailPage,
+                                    argument: {
+                                      "id": book.id,
+                                      "name": book.name
+                                    },
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         )
@@ -295,84 +342,65 @@ class _HorizontalBookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 144,
-      width: 315,
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          RegularCachedImage(
-            imageUrl: image,
-            width: 120,
-            height: 120,
-            fit: BoxFit.cover,
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  name ?? "Light Mage",
-                  style: Theme.of(context).textStyles.medium16,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  author ?? "Laurie Forest",
-                  style: Theme.of(context).textStyles.regular12.copyWith(
-                        color: ColorName.neutral60,
-                      ),
-                ),
-                const Expanded(child: SizedBox()),
-                const RatingBar(
-                  rating: 4,
-                  size: 20,
-                ),
-                Text(
-                  "${listenersCount ?? 100}+ Listeners",
-                  style: Theme.of(context)
-                      .textStyles
-                      .regular12
-                      .copyWith(color: ColorName.neutral60),
-                ),
-              ],
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        height: 144,
+        width: 315,
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            RegularCachedImage(
+              imageUrl: image,
+              width: 120,
+              height: 120,
+              fit: BoxFit.cover,
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _TabItem extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  const _TabItem({required this.text, this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: RegularElevatedButton(
-        onPressed: onPressed,
-        text: text,
-        radius: 12,
-        elevation: 0,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        style: Theme.of(context).textStyles.regular16,
-        size: const Size(0, 0),
+            const SizedBox(
+              width: 16,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    name ?? "Light Mage",
+                    style: Theme.of(context).textStyles.medium16,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    author ?? "Laurie Forest",
+                    style: Theme.of(context).textStyles.regular12.copyWith(
+                          color: ColorName.neutral60,
+                        ),
+                  ),
+                  const Expanded(child: SizedBox()),
+                  const RatingBar(
+                    rating: 4,
+                    size: 20,
+                  ),
+                  Text(
+                    "${listenersCount ?? 100}+ Listeners",
+                    style: Theme.of(context)
+                        .textStyles
+                        .regular12
+                        .copyWith(color: ColorName.neutral60),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -17,6 +17,7 @@ class ThemeProvider extends ChangeNotifier {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: ColorName.primary50,
+          foregroundColor: ColorName.neutral5,
           minimumSize: const Size.fromHeight(56),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(

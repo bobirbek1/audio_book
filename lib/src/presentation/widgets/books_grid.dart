@@ -1,5 +1,6 @@
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 
 class BooksGrid extends StatelessWidget {
@@ -30,6 +31,15 @@ class BooksGrid extends StatelessWidget {
                 imageUrl: book.photo,
                 author: book.author,
                 width: double.infinity,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    generateRoute(
+                      Pages.bookDetailPage,
+                      argument: {"id": book.id, "name": book.name},
+                    ),
+                  );
+                },
               );
             },
           );
