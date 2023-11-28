@@ -1,3 +1,4 @@
+import 'package:audio_book/src/presentation/pages/book_detail/book_detail_page.dart';
 import 'package:audio_book/src/presentation/pages/books_list_pages/best_seller_books_page.dart';
 import 'package:audio_book/src/presentation/pages/books_list_pages/books_by_category_page.dart';
 import 'package:audio_book/src/presentation/pages/books_list_pages/latest_books_page.dart';
@@ -28,6 +29,7 @@ enum Pages {
   latestBooksPage,
   trendingBooksPage,
   booksByCategoryPage,
+  bookDetailPage,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -95,6 +97,11 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return const BooksByCategoryPage();
+      });
+    case Pages.bookDetailPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const BookDetailPage();
       });
     default:
       return _buildMaterialRoute(

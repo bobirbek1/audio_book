@@ -114,12 +114,18 @@ class _RecommendedBooks extends StatelessWidget {
                         ?.map(
                           (book) => Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: RegularCachedImage(
-                              imageUrl: book.photo,
-                              width: 200,
-                              height: 300,
-                              fit: BoxFit.cover,
-                              isSquare: false,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    generateRoute(Pages.bookDetailPage));
+                              },
+                              child: RegularCachedImage(
+                                imageUrl: book.photo,
+                                width: 200,
+                                height: 300,
+                                fit: BoxFit.cover,
+                                isSquare: false,
+                              ),
                             ),
                           ),
                         )
