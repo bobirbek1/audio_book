@@ -4,6 +4,7 @@ import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
@@ -98,17 +99,13 @@ class BookDetailPage extends StatelessWidget {
                         const SizedBox(
                           height: 8,
                         ),
-                        const _Categories(categories: [
-                          "Fantasy",
-                          "Drama",
-                          "Comedy",
-                          "Fantasy",
-                          "Drama",
-                          "Comedy",
-                          "Fantasy",
-                          "Drama",
-                          "Comedy"
-                        ]),
+                        _Categories(
+                          categories: context
+                              .read<CategoryViewModel>()
+                              .getCategoriesNameByIds(
+                                vm.bookByIdState.book?.categories,
+                              ),
+                        ),
                         const SizedBox(
                           height: 32,
                         ),

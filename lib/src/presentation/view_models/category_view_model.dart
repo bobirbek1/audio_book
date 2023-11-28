@@ -38,6 +38,18 @@ class CategoryViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<String> getCategoriesNameByIds(List<String>? ids) {
+    if (ids == null || ids.isEmpty) return [];
+
+    final List<String> names = [];
+    for (var ctg in categories) {
+      if (ids.contains(ctg.id)) {
+        names.add(ctg.name ?? "unknown");
+      }
+    }
+    return names;
+  }
 }
 
 class CategoryState {
