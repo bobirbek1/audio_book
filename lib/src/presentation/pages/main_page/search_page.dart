@@ -1,9 +1,11 @@
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/data/models/category_model/category_model.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -49,20 +51,9 @@ class SearchPage extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          _RecommendedCategories(categories: [
-            CategoryModel(
-              name: "Business",
-            ),
-            CategoryModel(
-              name: "Personal",
-            ),
-            CategoryModel(
-              name: "Music",
-            ),
-            CategoryModel(
-              name: "Photographic",
-            ),
-          ]),
+          _RecommendedCategories(
+              categories:
+                  context.read<CategoryViewModel>().getRecommendedCategories()),
           const SizedBox(
             height: 32,
           ),
@@ -76,7 +67,9 @@ class SearchPage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          const _LatestSearchBooks(books: [],),
+          const _LatestSearchBooks(
+            books: [],
+          ),
         ],
       ),
     );
@@ -149,14 +142,13 @@ class _RecommendedCategories extends StatelessWidget {
         mainAxisSpacing: 16,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        children: categories
-            .map(
-              (ctg) => CategoryItem(
-                text: ctg.name,
-                onPressed: () {},
-              ),
-            )
-            .toList(),
+        children: List.generate(
+          categories.length > 4 ? 4 : categories.length,
+          (index) => CategoryItem(
+            text: categories[index].name,
+            onPressed: () {},
+          ),
+        ),
       ),
     );
   }

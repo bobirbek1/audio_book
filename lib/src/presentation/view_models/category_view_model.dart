@@ -50,6 +50,10 @@ class CategoryViewModel extends ChangeNotifier {
     }
     return names;
   }
+
+  List<CategoryModel> getRecommendedCategories() {
+    return categories.where((ctg) => ctg.isRecommended == true).toList();
+  }
 }
 
 class CategoryState {

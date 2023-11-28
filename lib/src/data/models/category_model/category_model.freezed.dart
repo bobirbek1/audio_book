@@ -22,6 +22,8 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
 mixin _$CategoryModel {
   String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: "is_recommended")
+  bool? get isRecommended => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,10 @@ abstract class $CategoryModelCopyWith<$Res> {
           CategoryModel value, $Res Function(CategoryModel) then) =
       _$CategoryModelCopyWithImpl<$Res, CategoryModel>;
   @useResult
-  $Res call({String? id, String? name});
+  $Res call(
+      {String? id,
+      String? name,
+      @JsonKey(name: "is_recommended") bool? isRecommended});
 }
 
 /// @nodoc
@@ -53,6 +58,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
+    Object? isRecommended = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -63,6 +69,10 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      isRecommended: freezed == isRecommended
+          ? _value.isRecommended
+          : isRecommended // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -75,7 +85,10 @@ abstract class _$$CategoryImplCopyWith<$Res>
       __$$CategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String? name});
+  $Res call(
+      {String? id,
+      String? name,
+      @JsonKey(name: "is_recommended") bool? isRecommended});
 }
 
 /// @nodoc
@@ -91,6 +104,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
+    Object? isRecommended = freezed,
   }) {
     return _then(_$CategoryImpl(
       id: freezed == id
@@ -101,6 +115,10 @@ class __$$CategoryImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      isRecommended: freezed == isRecommended
+          ? _value.isRecommended
+          : isRecommended // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -108,7 +126,10 @@ class __$$CategoryImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CategoryImpl implements _Category {
-  _$CategoryImpl({this.id, this.name});
+  _$CategoryImpl(
+      {this.id,
+      this.name,
+      @JsonKey(name: "is_recommended") this.isRecommended});
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -117,10 +138,13 @@ class _$CategoryImpl implements _Category {
   final String? id;
   @override
   final String? name;
+  @override
+  @JsonKey(name: "is_recommended")
+  final bool? isRecommended;
 
   @override
   String toString() {
-    return 'CategoryModel(id: $id, name: $name)';
+    return 'CategoryModel(id: $id, name: $name, isRecommended: $isRecommended)';
   }
 
   @override
@@ -129,12 +153,14 @@ class _$CategoryImpl implements _Category {
         (other.runtimeType == runtimeType &&
             other is _$CategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.isRecommended, isRecommended) ||
+                other.isRecommended == isRecommended));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, isRecommended);
 
   @JsonKey(ignore: true)
   @override
@@ -151,7 +177,11 @@ class _$CategoryImpl implements _Category {
 }
 
 abstract class _Category implements CategoryModel {
-  factory _Category({final String? id, final String? name}) = _$CategoryImpl;
+  factory _Category(
+          {final String? id,
+          final String? name,
+          @JsonKey(name: "is_recommended") final bool? isRecommended}) =
+      _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
       _$CategoryImpl.fromJson;
@@ -160,6 +190,9 @@ abstract class _Category implements CategoryModel {
   String? get id;
   @override
   String? get name;
+  @override
+  @JsonKey(name: "is_recommended")
+  bool? get isRecommended;
   @override
   @JsonKey(ignore: true)
   _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
