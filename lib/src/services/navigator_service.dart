@@ -8,6 +8,7 @@ import 'package:audio_book/src/presentation/pages/forget_password/forget_passwor
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_finish.dart';
 import 'package:audio_book/src/presentation/pages/main_page/main_page.dart';
 import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
+import 'package:audio_book/src/presentation/pages/reading_page/reading_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:audio_book/src/presentation/view_models/forget_password_view_model.dart';
@@ -30,6 +31,7 @@ enum Pages {
   trendingBooksPage,
   booksByCategoryPage,
   bookDetailPage,
+  readingPage,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -43,9 +45,10 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return ChangeNotifierProvider(
-          create: (context) => SignInViewModel(getIt.get(),getIt.get()),
+          create: (context) => SignInViewModel(getIt.get(), getIt.get()),
           builder: (context, child) => child!,
-          child: const SignInPage(),);
+          child: const SignInPage(),
+        );
       });
     case Pages.signUp:
       return _buildMaterialRoute(
@@ -53,7 +56,8 @@ Route generateRoute(Pages page, {Object? argument}) {
         return ChangeNotifierProvider(
           create: (context) => SignUpViewModel(getIt.get()),
           builder: (context, child) => child!,
-          child: const SignUpPage(),);
+          child: const SignUpPage(),
+        );
       });
     case Pages.forgetPasswordEmail:
       return _buildMaterialRoute(
@@ -61,7 +65,8 @@ Route generateRoute(Pages page, {Object? argument}) {
         return ChangeNotifierProvider(
           create: (context) => ForgetPasswordViewModel(getIt.get()),
           builder: (context, child) => child!,
-          child: const ForgetPasswordEmail(),);
+          child: const ForgetPasswordEmail(),
+        );
       });
     case Pages.forgetPasswordFinish:
       return _buildMaterialRoute(
@@ -102,6 +107,11 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return const BookDetailPage();
+      });
+    case Pages.readingPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const ReadingPage();
       });
     default:
       return _buildMaterialRoute(

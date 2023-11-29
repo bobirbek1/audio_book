@@ -9,6 +9,7 @@ import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -111,7 +112,18 @@ class BookDetailPage extends StatelessWidget {
                         ),
                         _ActionButtons(
                           onPlayAudio: () {},
-                          onReadBook: () {},
+                          onReadBook: () {
+                            Navigator.push(
+                              context,
+                              generateRoute(
+                                Pages.readingPage,
+                                argument: {
+                                  "name": vm.bookByIdState.book?.name,
+                                  "file_url": vm.bookByIdState.book?.fileUrl,
+                                },
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(
                           height: 32,
