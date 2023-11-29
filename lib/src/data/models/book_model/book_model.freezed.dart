@@ -20,17 +20,27 @@ BookModel _$BookModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BookModel {
+  @HiveField(0)
   String? get id => throw _privateConstructorUsedError;
+  @HiveField(1)
   String? get name => throw _privateConstructorUsedError;
+  @HiveField(2)
   String? get author => throw _privateConstructorUsedError;
+  @HiveField(3)
   String? get description => throw _privateConstructorUsedError;
+  @HiveField(4)
   String? get photo => throw _privateConstructorUsedError;
   @JsonKey(name: "file_url")
+  @HiveField(5)
   String? get fileUrl => throw _privateConstructorUsedError;
+  @HiveField(6)
   double? get rating => throw _privateConstructorUsedError;
+  @HiveField(7)
   int? get listeners => throw _privateConstructorUsedError;
+  @HiveField(8)
   List<String>? get categories => throw _privateConstructorUsedError;
   @JsonKey(name: "audio_urls")
+  @HiveField(9)
   List<AudioModel>? get audioUrls => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,16 +55,16 @@ abstract class $BookModelCopyWith<$Res> {
       _$BookModelCopyWithImpl<$Res, BookModel>;
   @useResult
   $Res call(
-      {String? id,
-      String? name,
-      String? author,
-      String? description,
-      String? photo,
-      @JsonKey(name: "file_url") String? fileUrl,
-      double? rating,
-      int? listeners,
-      List<String>? categories,
-      @JsonKey(name: "audio_urls") List<AudioModel>? audioUrls});
+      {@HiveField(0) String? id,
+      @HiveField(1) String? name,
+      @HiveField(2) String? author,
+      @HiveField(3) String? description,
+      @HiveField(4) String? photo,
+      @JsonKey(name: "file_url") @HiveField(5) String? fileUrl,
+      @HiveField(6) double? rating,
+      @HiveField(7) int? listeners,
+      @HiveField(8) List<String>? categories,
+      @JsonKey(name: "audio_urls") @HiveField(9) List<AudioModel>? audioUrls});
 }
 
 /// @nodoc
@@ -134,16 +144,16 @@ abstract class _$$BookImplCopyWith<$Res> implements $BookModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? id,
-      String? name,
-      String? author,
-      String? description,
-      String? photo,
-      @JsonKey(name: "file_url") String? fileUrl,
-      double? rating,
-      int? listeners,
-      List<String>? categories,
-      @JsonKey(name: "audio_urls") List<AudioModel>? audioUrls});
+      {@HiveField(0) String? id,
+      @HiveField(1) String? name,
+      @HiveField(2) String? author,
+      @HiveField(3) String? description,
+      @HiveField(4) String? photo,
+      @JsonKey(name: "file_url") @HiveField(5) String? fileUrl,
+      @HiveField(6) double? rating,
+      @HiveField(7) int? listeners,
+      @HiveField(8) List<String>? categories,
+      @JsonKey(name: "audio_urls") @HiveField(9) List<AudioModel>? audioUrls});
 }
 
 /// @nodoc
@@ -214,43 +224,56 @@ class __$$BookImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$BookImpl implements _Book {
+@HiveType(typeId: 1, adapterName: "BookModelAdapter")
+class _$BookImpl extends _Book {
   _$BookImpl(
-      {this.id,
-      this.name,
-      this.author,
-      this.description,
-      this.photo,
-      @JsonKey(name: "file_url") this.fileUrl,
-      this.rating,
-      this.listeners,
-      final List<String>? categories,
-      @JsonKey(name: "audio_urls") final List<AudioModel>? audioUrls})
+      {@HiveField(0) this.id,
+      @HiveField(1) this.name,
+      @HiveField(2) this.author,
+      @HiveField(3) this.description,
+      @HiveField(4) this.photo,
+      @JsonKey(name: "file_url") @HiveField(5) this.fileUrl,
+      @HiveField(6) this.rating,
+      @HiveField(7) this.listeners,
+      @HiveField(8) final List<String>? categories,
+      @JsonKey(name: "audio_urls")
+      @HiveField(9)
+      final List<AudioModel>? audioUrls})
       : _categories = categories,
-        _audioUrls = audioUrls;
+        _audioUrls = audioUrls,
+        super._();
 
   factory _$BookImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookImplFromJson(json);
 
   @override
+  @HiveField(0)
   final String? id;
   @override
+  @HiveField(1)
   final String? name;
   @override
+  @HiveField(2)
   final String? author;
   @override
+  @HiveField(3)
   final String? description;
   @override
+  @HiveField(4)
   final String? photo;
   @override
   @JsonKey(name: "file_url")
+  @HiveField(5)
   final String? fileUrl;
   @override
+  @HiveField(6)
   final double? rating;
   @override
+  @HiveField(7)
   final int? listeners;
   final List<String>? _categories;
   @override
+  @HiveField(8)
   List<String>? get categories {
     final value = _categories;
     if (value == null) return null;
@@ -262,6 +285,7 @@ class _$BookImpl implements _Book {
   final List<AudioModel>? _audioUrls;
   @override
   @JsonKey(name: "audio_urls")
+  @HiveField(9)
   List<AudioModel>? get audioUrls {
     final value = _audioUrls;
     if (value == null) return null;
@@ -325,43 +349,55 @@ class _$BookImpl implements _Book {
   }
 }
 
-abstract class _Book implements BookModel {
+abstract class _Book extends BookModel {
   factory _Book(
-          {final String? id,
-          final String? name,
-          final String? author,
-          final String? description,
-          final String? photo,
-          @JsonKey(name: "file_url") final String? fileUrl,
-          final double? rating,
-          final int? listeners,
-          final List<String>? categories,
-          @JsonKey(name: "audio_urls") final List<AudioModel>? audioUrls}) =
-      _$BookImpl;
+      {@HiveField(0) final String? id,
+      @HiveField(1) final String? name,
+      @HiveField(2) final String? author,
+      @HiveField(3) final String? description,
+      @HiveField(4) final String? photo,
+      @JsonKey(name: "file_url") @HiveField(5) final String? fileUrl,
+      @HiveField(6) final double? rating,
+      @HiveField(7) final int? listeners,
+      @HiveField(8) final List<String>? categories,
+      @JsonKey(name: "audio_urls")
+      @HiveField(9)
+      final List<AudioModel>? audioUrls}) = _$BookImpl;
+  _Book._() : super._();
 
   factory _Book.fromJson(Map<String, dynamic> json) = _$BookImpl.fromJson;
 
   @override
+  @HiveField(0)
   String? get id;
   @override
+  @HiveField(1)
   String? get name;
   @override
+  @HiveField(2)
   String? get author;
   @override
+  @HiveField(3)
   String? get description;
   @override
+  @HiveField(4)
   String? get photo;
   @override
   @JsonKey(name: "file_url")
+  @HiveField(5)
   String? get fileUrl;
   @override
+  @HiveField(6)
   double? get rating;
   @override
+  @HiveField(7)
   int? get listeners;
   @override
+  @HiveField(8)
   List<String>? get categories;
   @override
   @JsonKey(name: "audio_urls")
+  @HiveField(9)
   List<AudioModel>? get audioUrls;
   @override
   @JsonKey(ignore: true)
@@ -375,7 +411,9 @@ AudioModel _$AudioModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AudioModel {
+  @HiveField(0)
   String? get title => throw _privateConstructorUsedError;
+  @HiveField(1)
   String? get url => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -390,7 +428,7 @@ abstract class $AudioModelCopyWith<$Res> {
           AudioModel value, $Res Function(AudioModel) then) =
       _$AudioModelCopyWithImpl<$Res, AudioModel>;
   @useResult
-  $Res call({String? title, String? url});
+  $Res call({@HiveField(0) String? title, @HiveField(1) String? url});
 }
 
 /// @nodoc
@@ -429,7 +467,7 @@ abstract class _$$AudioImplCopyWith<$Res> implements $AudioModelCopyWith<$Res> {
       __$$AudioImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? title, String? url});
+  $Res call({@HiveField(0) String? title, @HiveField(1) String? url});
 }
 
 /// @nodoc
@@ -461,15 +499,18 @@ class __$$AudioImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AudioImpl implements _Audio {
-  _$AudioImpl({this.title, this.url});
+@HiveType(typeId: 2, adapterName: "AudioModelAdapter")
+class _$AudioImpl extends _Audio {
+  _$AudioImpl({@HiveField(0) this.title, @HiveField(1) this.url}) : super._();
 
   factory _$AudioImpl.fromJson(Map<String, dynamic> json) =>
       _$$AudioImplFromJson(json);
 
   @override
+  @HiveField(0)
   final String? title;
   @override
+  @HiveField(1)
   final String? url;
 
   @override
@@ -504,14 +545,19 @@ class _$AudioImpl implements _Audio {
   }
 }
 
-abstract class _Audio implements AudioModel {
-  factory _Audio({final String? title, final String? url}) = _$AudioImpl;
+abstract class _Audio extends AudioModel {
+  factory _Audio(
+      {@HiveField(0) final String? title,
+      @HiveField(1) final String? url}) = _$AudioImpl;
+  _Audio._() : super._();
 
   factory _Audio.fromJson(Map<String, dynamic> json) = _$AudioImpl.fromJson;
 
   @override
+  @HiveField(0)
   String? get title;
   @override
+  @HiveField(1)
   String? get url;
   @override
   @JsonKey(ignore: true)

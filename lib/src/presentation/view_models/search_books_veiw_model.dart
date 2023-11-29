@@ -4,11 +4,13 @@ import 'package:algolia/algolia.dart';
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class SearchBooksViewModel extends ChangeNotifier {
   final Algolia _algolia;
+  final Box<BookModel> _box;
 
-  SearchBooksViewModel(this._algolia) {
+  SearchBooksViewModel(this._algolia, this._box) {
     searchTextCtrl.addListener(searchTextListener);
   }
 
@@ -58,6 +60,19 @@ class SearchBooksViewModel extends ChangeNotifier {
           error: "Unknown exception occurred while searching from books");
     } finally {
       notifyListeners();
+    }
+  }
+
+  List<BookModel> getBooksFromLocal() {
+    return _box.values.toList();
+  }
+
+  void addBookToLocal(BookModel book) async {
+    try {
+      await _box.add(book);
+      print("Given book is added to local storage successfully");
+    } catch (e) {
+      print("Given book is added to local storage unseccessfully: $e");
     }
   }
 }

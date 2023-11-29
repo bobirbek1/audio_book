@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
       body: switch (_currentIndex) {
         0 => const HomePage(),
         1 => ChangeNotifierProvider(
-          create: (ctx) => SearchBooksViewModel(getIt.get()),
+          create: (ctx) => SearchBooksViewModel(getIt.get(),getIt.get()),
           builder: (ctx,child) => child!,
           child: const SearchPage(),),
         2 => const LibraryPage(),

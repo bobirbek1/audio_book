@@ -76,19 +76,32 @@ class SearchPage extends StatelessWidget {
                 const SizedBox(
                   height: 32,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Latest Search",
-                    style: Theme.of(context).textStyles.medium16,
-                  ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                const _LatestSearchBooks(
-                  books: [],
-                ),
+                Consumer<SearchBooksViewModel>(builder: (ctx, vm, child) {
+                  final books = vm.getBooksFromLocal();
+                  return books.isEmpty
+                      ? const SizedBox()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                "Latest Search",
+                                style: Theme.of(context).textStyles.medium16,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            _LatestSearchBooks(
+                              books: context
+                                  .read<SearchBooksViewModel>()
+                                  .getBooksFromLocal(),
+                            ),
+                          ],
+                        );
+                }),
               ],
             ),
           ),
@@ -124,6 +137,9 @@ class _SearchResults extends StatelessWidget {
           books: books,
           shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: 20),
+          onPressed: (book) {
+            context.read<SearchBooksViewModel>().addBookToLocal(book);
+          },
         ),
       ],
     );
@@ -140,42 +156,21 @@ class _LatestSearchBooks extends StatelessWidget {
       height: 220,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: const [
-          BookItem(
-            title: "Some Title",
-            imageUrl: "",
-            width: 160,
-            height: 160,
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          BookItem(
-            title: "Some Title",
-            imageUrl: "",
-            width: 160,
-            height: 160,
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          BookItem(
-            title: "Some Title",
-            imageUrl: "",
-            width: 160,
-            height: 160,
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          BookItem(
-            title: "Some Title",
-            imageUrl: "",
-            width: 160,
-            height: 160,
-          ),
-        ],
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        children: books
+            .map(
+              (book) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: BookItem(
+                  title: book.name,
+                  imageUrl: book.photo,
+                  onPressed: () {},
+                  width: 160,
+                  height: 220,
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

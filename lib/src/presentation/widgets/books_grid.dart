@@ -7,7 +7,13 @@ class BooksGrid extends StatelessWidget {
   final List<BookModel> books;
   final EdgeInsets? padding;
   final bool shrinkWrap;
-  const BooksGrid({required this.books, this.padding, this.shrinkWrap = false, super.key});
+  final void Function(BookModel book)? onPressed;
+  const BooksGrid(
+      {required this.books,
+      this.padding,
+      this.shrinkWrap = false,
+      this.onPressed,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,9 @@ class BooksGrid extends StatelessWidget {
                 author: book.author,
                 width: double.infinity,
                 onPressed: () {
+                  if (onPressed != null) {
+                    onPressed!(book);
+                  }
                   Navigator.push(
                     context,
                     generateRoute(
