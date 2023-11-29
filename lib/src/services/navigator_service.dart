@@ -111,7 +111,7 @@ Route generateRoute(Pages page, {Object? argument}) {
     case Pages.readingPage:
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
-        return const ReadingPage();
+        return ReadingPage(dcm: getIt.get(),box: getIt.get());
       });
     default:
       return _buildMaterialRoute(
