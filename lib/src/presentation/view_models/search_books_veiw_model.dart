@@ -64,12 +64,23 @@ class SearchBooksViewModel extends ChangeNotifier {
   }
 
   List<BookModel> getBooksFromLocal() {
-    return _box.values.toList();
+    return _box.values.toList().reversed.toList();
   }
 
   void addBookToLocal(BookModel book) async {
     try {
+      var books = _box.values;
+      for (var i = 0; i < books.length; i++) {
+        if (books.elementAt(i) == book) {
+          await _box.deleteAt(i);
+          break;
+        }
+      }
       await _box.add(book);
+      books = _box.values;
+      if (books.length > 10) {
+        _box.deleteAt(0);
+      }
       print("Given book is added to local storage successfully");
     } catch (e) {
       print("Given book is added to local storage unseccessfully: $e");

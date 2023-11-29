@@ -7,6 +7,7 @@ import 'package:audio_book/src/presentation/view_models/search_books_veiw_model.
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/books_grid.dart';
 import 'package:audio_book/src/presentation/widgets/category_item.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -164,7 +165,15 @@ class _LatestSearchBooks extends StatelessWidget {
                 child: BookItem(
                   title: book.name,
                   imageUrl: book.photo,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      generateRoute(
+                        Pages.bookDetailPage,
+                        argument: {"id": book.id, "name": book.name},
+                      ),
+                    );
+                  },
                   width: 160,
                   height: 220,
                 ),
@@ -195,7 +204,18 @@ class _RecommendedCategories extends StatelessWidget {
           categories.length > 4 ? 4 : categories.length,
           (index) => CategoryItem(
             text: categories[index].name,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                generateRoute(
+                  Pages.booksByCategoryPage,
+                  argument: {
+                    "category": categories[index].name,
+                    "category_id": categories[index].id,
+                  },
+                ),
+              );
+            },
           ),
         ),
       ),
