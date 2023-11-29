@@ -2,6 +2,7 @@ import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/data/models/category_model/category_model.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/search_books_veiw_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class SearchPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
-              controller: TextEditingController(),
+              controller: context.read<SearchBooksViewModel>().searchTextCtrl,
               decoration: const InputDecoration(
                 hintText: "Search books or authors...",
               ),

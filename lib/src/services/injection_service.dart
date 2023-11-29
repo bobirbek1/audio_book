@@ -1,3 +1,5 @@
+import 'package:algolia/algolia.dart';
+import 'package:audio_book/src/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -8,7 +10,11 @@ GetIt getIt = GetIt.instance;
 
 Future<void> setUp() async {
   final prefs = await SharedPreferences.getInstance();
+  var algolia = const Algolia.init(
+      applicationId: Constants.algoliaApplicationID,
+      apiKey: Constants.algoliaApiKey);
 
+  getIt.registerSingleton(algolia.instance);
   getIt.registerSingleton<SharedPreferences>(prefs);
 
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);

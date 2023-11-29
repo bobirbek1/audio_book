@@ -12,6 +12,13 @@ class SignInViewModel extends ChangeNotifier {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
 
+  @override
+  void dispose() {
+    emailCtrl.dispose();
+    passCtrl.dispose();
+    super.dispose();
+  }
+
   bool _isFieldsValid = false;
 
   bool get isFieldsValid => _isFieldsValid;
@@ -29,8 +36,7 @@ class SignInViewModel extends ChangeNotifier {
     try {
       _state = SignInState(state: BaseState.loading);
       notifyListeners();
-      final userCredentials =
-          await _auth.signInWithEmailAndPassword(
+      final userCredentials = await _auth.signInWithEmailAndPassword(
         email: emailCtrl.text,
         password: passCtrl.text,
       );
@@ -92,8 +98,7 @@ class SignInViewModel extends ChangeNotifier {
   Future<OAuthCredential?> _fetchGoogleCredentials() async {
     try {
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await _googleSignIn
-          .signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       // Obtain the auth details from the request
       final GoogleSignInAuthentication? googleAuth =

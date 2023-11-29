@@ -11,6 +11,14 @@ class SignUpViewModel extends ChangeNotifier {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
 
+  @override
+  void dispose() {
+    nameCtrl.dispose();
+    emailCtrl.dispose();
+    passCtrl.dispose();
+    super.dispose();
+  }
+
   bool _isFieldValid = false;
 
   bool get isFieldValid => _isFieldValid;

@@ -4,8 +4,11 @@ import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/pages/main_page/home_page.dart';
 import 'package:audio_book/src/presentation/pages/main_page/library_page.dart';
 import 'package:audio_book/src/presentation/pages/main_page/search_page.dart';
+import 'package:audio_book/src/presentation/view_models/search_books_veiw_model.dart';
+import 'package:audio_book/src/services/injection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -75,7 +78,10 @@ class _MainPageState extends State<MainPage> {
       ),
       body: switch (_currentIndex) {
         0 => const HomePage(),
-        1 => const SearchPage(),
+        1 => ChangeNotifierProvider(
+          create: (ctx) => SearchBooksViewModel(getIt.get()),
+          builder: (ctx,child) => child!,
+          child: const SearchPage(),),
         2 => const LibraryPage(),
         _ => const SizedBox(),
       },
