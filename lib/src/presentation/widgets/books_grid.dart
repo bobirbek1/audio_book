@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class BooksGrid extends StatelessWidget {
   final List<BookModel> books;
   final EdgeInsets? padding;
-  const BooksGrid({required this.books, this.padding, super.key});
+  final bool shrinkWrap;
+  const BooksGrid({required this.books, this.padding, this.shrinkWrap = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,8 @@ class BooksGrid extends StatelessWidget {
               mainAxisSpacing: 16,
               childAspectRatio: 16 / 21,
             ),
+            shrinkWrap: shrinkWrap,
+            physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
             padding: padding ??
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             itemCount: books.length,

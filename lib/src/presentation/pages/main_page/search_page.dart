@@ -1,9 +1,11 @@
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/data/models/category_model/category_model.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/search_books_veiw_model.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
+import 'package:audio_book/src/presentation/widgets/books_grid.dart';
 import 'package:audio_book/src/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,37 +44,88 @@ class SearchPage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Recommended Categories",
-              style: Theme.of(context).textStyles.medium16,
+          Consumer<SearchBooksViewModel>(
+            builder: (ctx, vm, child) {
+              return switch (vm.state.state) {
+                BaseState.loading => const SizedBox(
+                    width: double.infinity,
+                    child: CircularProgressIndicator.adaptive()),
+                BaseState.loaded => _SearchResults(books: vm.state.books ?? []),
+                BaseState.error => Text(vm.state.error ??
+                    "Unknown exception occurred, Please try again!"),
+                _ => child!,
+              };
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Recommended Categories",
+                    style: Theme.of(context).textStyles.medium16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                _RecommendedCategories(
+                    categories: context
+                        .read<CategoryViewModel>()
+                        .getRecommendedCategories()),
+                const SizedBox(
+                  height: 32,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Latest Search",
+                    style: Theme.of(context).textStyles.medium16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                const _LatestSearchBooks(
+                  books: [],
+                ),
+              ],
             ),
           ),
           const SizedBox(
-            height: 16,
-          ),
-          _RecommendedCategories(
-              categories:
-                  context.read<CategoryViewModel>().getRecommendedCategories()),
-          const SizedBox(
             height: 32,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Latest Search",
-              style: Theme.of(context).textStyles.medium16,
-            ),
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          const _LatestSearchBooks(
-            books: [],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SearchResults extends StatelessWidget {
+  final List<BookModel> books;
+  const _SearchResults({required this.books});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            "Search Results",
+            style: Theme.of(context).textStyles.medium16,
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        BooksGrid(
+          books: books,
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+        ),
+      ],
     );
   }
 }

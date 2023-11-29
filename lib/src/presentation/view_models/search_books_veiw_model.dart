@@ -19,13 +19,19 @@ class SearchBooksViewModel extends ChangeNotifier {
   void searchTextListener() {
     _timer?.cancel();
     _timer = Timer(const Duration(milliseconds: 1000), () {
-      _searchTextFromBooks();
+      if (searchTextCtrl.text.isEmpty) {
+        _state = SearchResultState(state: BaseState.initial);
+        notifyListeners();
+      } else {
+        _searchTextFromBooks();
+      }
     });
   }
 
   @override
   void dispose() {
     searchTextCtrl.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 
