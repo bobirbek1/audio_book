@@ -74,6 +74,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/more_square.svg
   SvgGenImage get moreSquare => const SvgGenImage('assets/icons/more_square.svg');
 
+  /// File path: assets/icons/paper.svg
+  SvgGenImage get paper => const SvgGenImage('assets/icons/paper.svg');
+
   /// File path: assets/icons/play.svg
   SvgGenImage get play => const SvgGenImage('assets/icons/play.svg');
 
@@ -129,6 +132,7 @@ class $AssetsIconsGen {
         homeOutline,
         more,
         moreSquare,
+        paper,
         play,
         playBold,
         profile,

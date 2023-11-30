@@ -111,7 +111,10 @@ class BookDetailPage extends StatelessWidget {
                           height: 32,
                         ),
                         _ActionButtons(
-                          onPlayAudio: () {},
+                          onPlayAudio: () {
+                            Navigator.push(
+                                context, generateRoute(Pages.playerPage,argument: vm.bookByIdState.book,),);
+                          },
                           onReadBook: () {
                             Navigator.push(
                               context,
