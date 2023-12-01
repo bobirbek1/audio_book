@@ -5,6 +5,7 @@ import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/player_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
+import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -81,9 +82,20 @@ class PlayerPage extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          _PlayerControlBar(onPlay: () {
-            context.read<PlayerViewModel>().playOrPause();
-          }),
+          _PlayerControlBar(
+            onPlay: () {
+              context.read<PlayerViewModel>().playOrPause();
+            },
+            onNext: () {
+              context.read<PlayerViewModel>().next();
+            },
+            onPrevious: () {
+              context.read<PlayerViewModel>().previous();
+            },
+            onVolume: () {
+              context.read<PlayerViewModel>().toogleVoice();
+            },
+          ),
           const SizedBox(
             height: 32,
           ),
@@ -173,7 +185,10 @@ class _PlayerControlBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onVolume,
-            icon: Assets.icons.volumeUp.svg(),
+            icon: context.select<PlayerViewModel, bool>(
+                    (value) => value.isVoiceActive)
+                ? Assets.icons.volumeUp.svg()
+                : Assets.icons.volumeOff.svg(),
             iconSize: 24,
           ),
           const Expanded(child: SizedBox()),
@@ -187,16 +202,23 @@ class _PlayerControlBar extends StatelessWidget {
           const SizedBox(
             width: 16,
           ),
-          IconButton(
+          RegularElevatedButton(
             onPressed: onPlay,
-            icon: Assets.icons.playBold.svg(
-              width: 60,
-              height: 60,
-              colorFilter: const ColorFilter.mode(
-                ColorName.primary50,
-                BlendMode.srcIn,
-              ),
-            ),
+            size: const Size(60, 60),
+            radius: 60,
+            padding: const EdgeInsets.all(8),
+            child: context
+                    .select<PlayerViewModel, bool>((value) => value.isPlaying)
+                ? const Icon(
+                    Icons.pause_rounded,
+                    size: 36,
+                    color: ColorName.white,
+                  )
+                : const Icon(
+                    Icons.play_arrow_rounded,
+                    size: 36,
+                    color: ColorName.white,
+                  ),
           ),
           const SizedBox(
             width: 16,
@@ -226,8 +248,6 @@ class _PlayerSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<PlayerViewModel>();
-    print("download progress: ${vm.downloadProgress}");
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: ProgressBar(
@@ -235,6 +255,9 @@ class _PlayerSlider extends StatelessWidget {
         total: vm.duration ?? const Duration(milliseconds: 1000),
         buffered: Duration(milliseconds: vm.downloadProgress),
         barCapShape: BarCapShape.round,
+        onSeek: (duration) {
+          vm.seekTo(duration);
+        },
         barHeight: 4,
         thumbRadius: 8,
         thumbGlowRadius: 16,

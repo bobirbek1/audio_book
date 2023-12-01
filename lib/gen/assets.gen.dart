@@ -107,6 +107,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/upload.svg
   SvgGenImage get upload => const SvgGenImage('assets/icons/upload.svg');
 
+  /// File path: assets/icons/volume_off.svg
+  SvgGenImage get volumeOff => const SvgGenImage('assets/icons/volume_off.svg');
+
   /// File path: assets/icons/volume_up.svg
   SvgGenImage get volumeUp => const SvgGenImage('assets/icons/volume_up.svg');
 
@@ -143,6 +146,7 @@ class $AssetsIconsGen {
         starOutlined,
         timeSquare,
         upload,
+        volumeOff,
         volumeUp
       ];
 }

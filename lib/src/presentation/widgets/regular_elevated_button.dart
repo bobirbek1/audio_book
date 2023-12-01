@@ -11,6 +11,7 @@ class RegularElevatedButton extends StatelessWidget {
   final double? radius;
   final TextStyle? style;
   final double? elevation;
+  final EdgeInsets? padding;
   const RegularElevatedButton(
       {required this.onPressed,
       this.text,
@@ -20,6 +21,7 @@ class RegularElevatedButton extends StatelessWidget {
       this.radius,
       this.style,
       this.elevation,
+      this.padding,
       super.key})
       : assert(text != null && child == null || text == null && child != null);
 
@@ -30,24 +32,33 @@ class RegularElevatedButton extends StatelessWidget {
       minimumSize: size,
       elevation: elevation,
       shadowColor: elevation == 0 ? Colors.transparent : null,
-      shape:  radius != null ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius!,),) : null,
+      padding: padding,
+      shape: radius != null
+          ? RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                radius!,
+              ),
+            )
+          : null,
     );
     return ElevatedButton(
       onPressed: onPressed,
-
       style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-        backgroundColor: customStyle.backgroundColor,
-        minimumSize: customStyle.minimumSize,
-        shape: customStyle.shape,
-        elevation: customStyle.elevation,
-        shadowColor: customStyle.shadowColor,
-      ),
+            backgroundColor: customStyle.backgroundColor,
+            minimumSize: customStyle.minimumSize,
+            shape: customStyle.shape,
+            elevation: customStyle.elevation,
+            shadowColor: customStyle.shadowColor,
+            padding: customStyle.padding,
+          ),
       child: text != null
-          ? Text(text!,
+          ? Text(
+              text!,
               style: style ??
                   Theme.of(context).textStyles.medium16.copyWith(
                         color: ColorName.white,
-                      ),)
+                      ),
+            )
           : child,
     );
   }

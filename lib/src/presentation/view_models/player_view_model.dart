@@ -27,7 +27,12 @@ class PlayerViewModel extends ChangeNotifier {
   double? _downloadProgress;
   int get downloadProgress => ((_downloadProgress ?? 0) * 1000).toInt();
 
-  bool get isPLaying => _player.playing;
+  bool _isVoiceActive = true;
+  bool get isVoiceActive => _isVoiceActive;
+
+  bool get isPlaying => _player.playing;
+
+  int _currentIndex = 0;
 
   BookModel? _book;
 
@@ -37,7 +42,8 @@ class PlayerViewModel extends ChangeNotifier {
     }
 
     _book = book;
-    _setAudioSource(0);
+    _currentIndex = 0;
+    _setAudioSource(_currentIndex);
   }
 
   void _positionListener(Duration? pos) {
@@ -47,11 +53,46 @@ class PlayerViewModel extends ChangeNotifier {
   }
 
   void playOrPause() async {
-    if (isPLaying) {
+    if (isPlaying) {
       await _player.pause();
     } else {
       await _player.play();
     }
+  }
+
+  void seekTo(Duration duration) async {
+    await _player.seek(duration);
+  }
+
+  void next() async {
+    if (_book?.audioUrls == null) {
+      return;
+    }
+    if (_book!.audioUrls!.length > _currentIndex - 1) {
+      _currentIndex++;
+      _setAudioSource(_currentIndex);
+    }
+  }
+
+  void previous() async {
+    if (_book?.audioUrls == null) {
+      return;
+    }
+    if (_currentIndex > 0) {
+      _currentIndex--;
+      _setAudioSource(_currentIndex);
+    }
+  }
+
+  void toogleVoice() async {
+    if (_isVoiceActive) {
+      await _player.setVolume(0);
+      _isVoiceActive = false;
+    } else {
+      await _player.setVolume(1);
+      _isVoiceActive = true;
+    }
+    notifyListeners();
   }
 
   void _setAudioSource(int index) async {
