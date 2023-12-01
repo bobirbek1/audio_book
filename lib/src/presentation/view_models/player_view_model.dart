@@ -32,7 +32,23 @@ class PlayerViewModel extends ChangeNotifier {
 
   bool get isPlaying => _player.playing;
 
+  String? get getCurrentChapterName => _book?.audioUrls?[_currentIndex].title;
+
+  List<AudioModel>? get getAudios => _book?.audioUrls;
+
   int _currentIndex = 0;
+
+  double get currentSpeed => _player.speed;
+
+  String get getCurrentSpeedName => currentSpeed == 0.5
+      ? "Speed 0.5x"
+      : currentSpeed == 1.0
+          ? "Speed normal"
+          : currentSpeed == 1.5
+              ? "Speed 1.5x"
+              : currentSpeed == 2.0
+                  ? "Speed 2.0x"
+                  : "Speed 3x";
 
   BookModel? _book;
 
@@ -47,7 +63,6 @@ class PlayerViewModel extends ChangeNotifier {
   }
 
   void _positionListener(Duration? pos) {
-    print("audio position changed: $pos");
     _currentPosition = pos;
     notifyListeners();
   }
@@ -92,6 +107,19 @@ class PlayerViewModel extends ChangeNotifier {
       await _player.setVolume(1);
       _isVoiceActive = true;
     }
+    notifyListeners();
+  }
+
+  void changeAudio(int index) {
+    if (_currentIndex == index) {
+      return;
+    }
+    _currentIndex = index;
+    _setAudioSource(_currentIndex);
+  }
+
+  void changeSpeed(double speed) async {
+    await _player.setSpeed(speed);
     notifyListeners();
   }
 

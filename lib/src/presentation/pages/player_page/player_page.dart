@@ -120,15 +120,24 @@ class _BottomControlBar extends StatelessWidget {
         children: [
           Expanded(
             child: _BottomBarItem(
-                icon: Assets.icons.bookmark.svg(), label: "Bookmark"),
+              icon: Assets.icons.paper.svg(),
+              label: context.select<PlayerViewModel, String?>(
+                (value) => value.getCurrentChapterName,
+              ),
+              onPressed: () {
+                _showChapterSelector(context);
+              },
+            ),
           ),
           Expanded(
             child: _BottomBarItem(
-                icon: Assets.icons.paper.svg(), label: "Chapter 1"),
-          ),
-          Expanded(
-            child: _BottomBarItem(
-                icon: Assets.icons.timeSquare.svg(), label: "Speed 1x"),
+              icon: Assets.icons.timeSquare.svg(),
+              label: context.select<PlayerViewModel, String>(
+                  (value) => value.getCurrentSpeedName),
+              onPressed: () {
+                _showSpeedSelector(context);
+              },
+            ),
           ),
           Expanded(
             child: _BottomBarItem(
@@ -138,20 +147,147 @@ class _BottomControlBar extends StatelessWidget {
       ),
     );
   }
+
+  void _showChapterSelector(BuildContext context) {
+    final audios = context.read<PlayerViewModel>().getAudios;
+    if (audios != null) {
+      showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (ctx) {
+            return SafeArea(child: _ChapterSelector(audios));
+          });
+    }
+  }
+
+  void _showSpeedSelector(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (ctx) {
+          return const SafeArea(child: _SpeedSelector());
+        });
+  }
+}
+
+class _SpeedSelector extends StatelessWidget {
+  const _SpeedSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      shrinkWrap: true,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 60,
+              height: 4,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: ColorName.neutral30,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ListTile(
+          title: const Text("Speed 0.5x"),
+          onTap: () {
+            context.read<PlayerViewModel>().changeSpeed(0.5);
+          },
+        ),
+        ListTile(
+          title: const Text("Speed normal"),
+          onTap: () {
+            context.read<PlayerViewModel>().changeSpeed(1.0);
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          title: const Text("Speed 1.5x"),
+          onTap: () {
+            context.read<PlayerViewModel>().changeSpeed(1.5);
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          title: const Text("Speed 2x"),
+          onTap: () {
+            context.read<PlayerViewModel>().changeSpeed(2.0);
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          title: const Text("Speed 3"),
+          onTap: () {
+            context.read<PlayerViewModel>().changeSpeed(3.0);
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ChapterSelector extends StatelessWidget {
+  final List<AudioModel> audios;
+  const _ChapterSelector(this.audios);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      shrinkWrap: true,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 60,
+              height: 4,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: ColorName.neutral30,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ...List.generate(audios.length, (index) {
+          return ListTile(
+            title: Text(audios[index].title ?? "No name"),
+            onTap: () {
+              context.read<PlayerViewModel>().changeAudio(index);
+              Navigator.pop(context);
+            },
+          );
+        }),
+      ],
+    );
+  }
 }
 
 class _BottomBarItem extends StatelessWidget {
   final Widget icon;
   final String? label;
+  final VoidCallback? onPressed;
   const _BottomBarItem({
     required this.icon,
     required this.label,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return RegularTextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Column(
         children: [
           icon,
@@ -159,7 +295,7 @@ class _BottomBarItem extends StatelessWidget {
             height: 8,
           ),
           Text(
-            label ?? "Label",
+            label ?? "No name",
             style: Theme.of(context).textStyles.medium10,
           ),
         ],
