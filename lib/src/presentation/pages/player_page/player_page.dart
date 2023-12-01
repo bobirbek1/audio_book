@@ -6,6 +6,7 @@ import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/player_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +81,9 @@ class PlayerPage extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          const _PlayerControlBar(),
+          _PlayerControlBar(onPlay: () {
+            context.read<PlayerViewModel>().playOrPause();
+          }),
           const SizedBox(
             height: 32,
           ),
@@ -217,57 +220,30 @@ class _PlayerControlBar extends StatelessWidget {
   }
 }
 
-class _PlayerSlider extends StatefulWidget {
+class _PlayerSlider extends StatelessWidget {
   const _PlayerSlider();
 
   @override
-  State<_PlayerSlider> createState() => __PlayerSliderState();
-}
-
-class __PlayerSliderState extends State<_PlayerSlider> {
-  double currentValue = 0;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Slider(
-          value: currentValue,
-          max: 100,
-          onChanged: (val) {
-            setState(() {
-              currentValue = val;
-            });
-            print("onchanged: $val");
-          },
-          onChangeEnd: (val) {
-            print("onchangeEnd: $val");
-          },
-          onChangeStart: (val) {
-            print("onchangestart: $val");
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "00:30",
-                style: Theme.of(context).textStyles.regular10.copyWith(
-                      color: ColorName.primary20,
-                    ),
-              ),
-              Text(
-                "04:30",
-                style: Theme.of(context).textStyles.regular10.copyWith(
-                      color: ColorName.primary20,
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ],
+    final vm = context.watch<PlayerViewModel>();
+    print("download progress: ${vm.downloadProgress}");
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: ProgressBar(
+        progress: vm.currentPosition ?? const Duration(),
+        total: vm.duration ?? const Duration(milliseconds: 1000),
+        buffered: Duration(milliseconds: vm.downloadProgress),
+        barCapShape: BarCapShape.round,
+        barHeight: 4,
+        thumbRadius: 8,
+        thumbGlowRadius: 16,
+        timeLabelLocation: TimeLabelLocation.below,
+        timeLabelPadding: 4,
+        timeLabelTextStyle: Theme.of(context).textStyles.regular10.copyWith(
+              color: ColorName.primary20,
+            ),
+      ),
     );
   }
 }

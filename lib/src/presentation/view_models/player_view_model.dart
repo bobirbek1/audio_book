@@ -24,13 +24,12 @@ class PlayerViewModel extends ChangeNotifier {
   Duration? _duration;
   Duration? get duration => _duration;
 
-  BookModel? _book;
+  double? _downloadProgress;
+  int get downloadProgress => ((_downloadProgress ?? 0) * 1000).toInt();
 
-  void _positionListener(Duration? pos) {
-    print("audio position changed: $pos");
-    _currentPosition = pos;
-    notifyListeners();
-  }
+  bool get isPLaying => _player.playing;
+
+  BookModel? _book;
 
   void initBookAudios(BookModel? book) {
     if (book == null || _book == book) {
@@ -41,13 +40,30 @@ class PlayerViewModel extends ChangeNotifier {
     _setAudioSource(0);
   }
 
+  void _positionListener(Duration? pos) {
+    print("audio position changed: $pos");
+    _currentPosition = pos;
+    notifyListeners();
+  }
+
+  void playOrPause() async {
+    if (isPLaying) {
+      await _player.pause();
+    } else {
+      await _player.play();
+    }
+  }
+
   void _setAudioSource(int index) async {
+    await _player.stop();
+    _duration = null;
+    _currentPosition = null;
+    _downloadProgress = 0;
     final file = await _getFilefromCache(_book?.audioUrls?[index].url);
 
     if (file == null) {
       return;
     }
-    await _player.stop();
     _duration = await _player.setAudioSource(AudioSource.file(file.path));
     print("audio duration: $duration");
     _player.play();
@@ -67,6 +83,8 @@ class PlayerViewModel extends ChangeNotifier {
     _cm.getFileStream(url, withProgress: true).listen((response) {
       if (response is DownloadProgress) {
         print("audio download progress: ${response.progress}");
+        _downloadProgress = response.progress;
+        notifyListeners();
       } else if (response is FileInfo) {
         file.complete(response.file);
       }
