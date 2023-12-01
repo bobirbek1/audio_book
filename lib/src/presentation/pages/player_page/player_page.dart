@@ -10,6 +10,7 @@ import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PlayerPage extends StatelessWidget {
   const PlayerPage({super.key});
@@ -95,6 +96,19 @@ class PlayerPage extends StatelessWidget {
             onVolume: () {
               context.read<PlayerViewModel>().toogleVoice();
             },
+            onShare: () async {
+              final filePath = context.read<PlayerViewModel>().filePath;
+              final shareText = context.read<PlayerViewModel>().getShareText;
+              ShareResult result;
+              if (filePath != null) {
+                result = await Share.shareXFiles([XFile(filePath)],
+                    text: shareText, subject: "Audio book");
+              } else {
+                result = await Share.shareWithResult(shareText,
+                    subject: "Audio book");
+              }
+              print("share result: ${result.status.name}");
+            },
           ),
           const SizedBox(
             height: 32,
@@ -141,7 +155,13 @@ class _BottomControlBar extends StatelessWidget {
           ),
           Expanded(
             child: _BottomBarItem(
-                icon: Assets.icons.arrowDownSquare.svg(), label: "Download"),
+              icon: Assets.icons.arrowDownSquare.svg(),
+              label: "Download",
+              onPressed: () {
+                context.read<PlayerViewModel>().downloadAllAudios();
+                context.showSnackBar("All audios are downloading...");
+              },
+            ),
           ),
         ],
       ),

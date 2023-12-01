@@ -36,6 +36,12 @@ class PlayerViewModel extends ChangeNotifier {
 
   List<AudioModel>? get getAudios => _book?.audioUrls;
 
+  String get getShareText =>
+      "Book name: ${_book?.name}\nAuthor: ${_book?.author}\n\nDescription: ${_book?.description}";
+
+  File? _file;
+  String? get filePath => _file?.path;
+
   int _currentIndex = 0;
 
   double get currentSpeed => _player.speed;
@@ -83,7 +89,7 @@ class PlayerViewModel extends ChangeNotifier {
     if (_book?.audioUrls == null) {
       return;
     }
-    if (_book!.audioUrls!.length > _currentIndex - 1) {
+    if (_book!.audioUrls!.length > _currentIndex + 1) {
       _currentIndex++;
       _setAudioSource(_currentIndex);
     }
@@ -123,17 +129,26 @@ class PlayerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void downloadAllAudios() async {
+    if (_book?.audioUrls == null) return;
+    for (var i = 0; i < _book!.audioUrls!.length; i++) {
+      if (i == _currentIndex) continue;
+      await _cm.getSingleFile(_book!.audioUrls![i].url ?? "");
+    }
+  }
+
   void _setAudioSource(int index) async {
     await _player.stop();
     _duration = null;
     _currentPosition = null;
     _downloadProgress = 0;
-    final file = await _getFilefromCache(_book?.audioUrls?[index].url);
+    _file == null;
+    _file = await _getFilefromCache(_book?.audioUrls?[index].url);
 
-    if (file == null) {
+    if (_file == null) {
       return;
     }
-    _duration = await _player.setAudioSource(AudioSource.file(file.path));
+    _duration = await _player.setAudioSource(AudioSource.file(_file!.path));
     print("audio duration: $duration");
     _player.play();
   }
