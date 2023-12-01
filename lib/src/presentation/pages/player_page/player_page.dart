@@ -3,9 +3,11 @@ import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/player_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerPage extends StatelessWidget {
   const PlayerPage({super.key});
@@ -13,6 +15,7 @@ class PlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final book = context.getArguments<BookModel?>();
+    context.read<PlayerViewModel>().initBookAudios(book);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
