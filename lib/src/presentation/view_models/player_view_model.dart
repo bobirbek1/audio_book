@@ -65,6 +65,7 @@ class PlayerViewModel extends ChangeNotifier {
                   : "Speed 3x";
 
   BookModel? _book;
+  BookModel? get book => _book;
 
   void initBookAudios(BookModel? book) {
     if (book == null || _book == book) {
@@ -77,7 +78,11 @@ class PlayerViewModel extends ChangeNotifier {
     _setAudioSource(_currentIndex, lastDuration);
   }
 
-  void _positionListener(Duration? pos) {
+  void _positionListener(Duration pos) {
+    print("position => $pos, duration => $duration");
+    if (duration != null && pos.inSeconds == duration!.inSeconds) {
+      next();
+    }
     _currentPosition = pos;
     notifyListeners();
   }

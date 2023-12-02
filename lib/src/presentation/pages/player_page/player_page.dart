@@ -7,6 +7,7 @@ import 'package:audio_book/src/presentation/view_models/player_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
+import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,106 +19,129 @@ class PlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final book = context.getArguments<BookModel?>();
-    context.read<PlayerViewModel>().initBookAudios(book);
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          iconSize: 24,
-          icon: Assets.icons.arrowDown.svg(),
+    final vm = context.read<PlayerViewModel>();
+    final messanger = ScaffoldMessenger.of(context);
+    messanger.clearSnackBars();
+    vm.initBookAudios(book);
+    return PopScope(
+      onPopInvoked: (canPop) {
+        messanger
+            .showSnackBar(
+              const SnackBar(
+                content: _PlayerSnackbar(),
+                backgroundColor: Colors.white,
+                duration: Duration(days: 1),
+                elevation: 6,
+                padding: EdgeInsets.zero,
+              ),
+            )
+            .closed
+            .then((value) {
+          if (value == SnackBarClosedReason.swipe && vm.isPlaying) {
+            vm.playOrPause();
+          }
+        });
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            iconSize: 24,
+            icon: Assets.icons.arrowDown.svg(),
+          ),
+          centerTitle: true,
+          title: Text(
+            book?.name ?? "Name not found",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
-        centerTitle: true,
-        title: Text(
-          book?.name ?? "Name not found",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 28,
-          ),
-          Expanded(
-            child: RegularCachedImage(
-              imageUrl: book?.photo,
-              fit: BoxFit.contain,
-              width: double.infinity,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 28,
             ),
-          ),
-          const SizedBox(
-            height: 28,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              book?.name ?? "Name not found",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textStyles.medium20,
+            Expanded(
+              child: RegularCachedImage(
+                imageUrl: book?.photo,
+                fit: BoxFit.contain,
+                width: double.infinity,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 4,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              book?.author ?? "Name not found",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textStyles.regular16.copyWith(
-                    color: ColorName.black.withOpacity(
-                      0.5,
+            const SizedBox(
+              height: 28,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                book?.name ?? "Name not found",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textStyles.medium20,
+              ),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                book?.author ?? "Name not found",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textStyles.regular16.copyWith(
+                      color: ColorName.black.withOpacity(
+                        0.5,
+                      ),
                     ),
-                  ),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          const _PlayerSlider(),
-          const SizedBox(
-            height: 24,
-          ),
-          _PlayerControlBar(
-            onPlay: () {
-              context.read<PlayerViewModel>().playOrPause();
-            },
-            onNext: () {
-              context.read<PlayerViewModel>().next();
-            },
-            onPrevious: () {
-              context.read<PlayerViewModel>().previous();
-            },
-            onVolume: () {
-              context.read<PlayerViewModel>().toogleVoice();
-            },
-            onShare: () async {
-              final filePath = context.read<PlayerViewModel>().filePath;
-              final shareText = context.read<PlayerViewModel>().getShareText;
-              ShareResult result;
-              if (filePath != null) {
-                result = await Share.shareXFiles([XFile(filePath)],
-                    text: shareText, subject: "Audio book");
-              } else {
-                result = await Share.shareWithResult(shareText,
-                    subject: "Audio book");
-              }
-              print("share result: ${result.status.name}");
-            },
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          const _BottomControlBar(),
-          const SizedBox(
-            height: 32,
-          ),
-        ],
+            const SizedBox(
+              height: 16,
+            ),
+            const _PlayerSlider(),
+            const SizedBox(
+              height: 24,
+            ),
+            _PlayerControlBar(
+              onPlay: () {
+                context.read<PlayerViewModel>().playOrPause();
+              },
+              onNext: () {
+                context.read<PlayerViewModel>().next();
+              },
+              onPrevious: () {
+                context.read<PlayerViewModel>().previous();
+              },
+              onVolume: () {
+                context.read<PlayerViewModel>().toogleVoice();
+              },
+              onShare: () async {
+                final filePath = context.read<PlayerViewModel>().filePath;
+                final shareText = context.read<PlayerViewModel>().getShareText;
+                ShareResult result;
+                if (filePath != null) {
+                  result = await Share.shareXFiles([XFile(filePath)],
+                      text: shareText, subject: "Audio book");
+                } else {
+                  result = await Share.shareWithResult(shareText,
+                      subject: "Audio book");
+                }
+                print("share result: ${result.status.name}");
+              },
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            const _BottomControlBar(),
+            const SizedBox(
+              height: 32,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -423,6 +447,112 @@ class _PlayerSlider extends StatelessWidget {
               color: ColorName.primary20,
             ),
       ),
+    );
+  }
+}
+
+class _PlayerSnackbar extends StatelessWidget {
+  const _PlayerSnackbar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ProgressBar(
+          barCapShape: BarCapShape.square,
+          barHeight: 2,
+          thumbColor: Colors.transparent,
+          thumbGlowColor: Colors.transparent,
+          timeLabelLocation: TimeLabelLocation.none,
+          onSeek: (position) =>
+              context.read<PlayerViewModel>().seekTo(position),
+          progress: context.select<PlayerViewModel, Duration?>(
+                  (value) => value.currentPosition) ??
+              Duration.zero,
+          total: context.select<PlayerViewModel, Duration?>(
+                  (value) => value.duration) ??
+              Duration.zero,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 8,
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: RegularCachedImage(
+                imageUrl: context.read<PlayerViewModel>().book?.photo,
+                width: 64,
+                height: 64,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    generateRoute(
+                      Pages.playerPage,
+                      argument: context.read<PlayerViewModel>().book,
+                    ),
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      context.read<PlayerViewModel>().book?.name ?? "Unknown",
+                      style: Theme.of(context).textStyles.medium16,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      context.read<PlayerViewModel>().book?.author ?? "Unknown",
+                      style: Theme.of(context).textStyles.regular16.copyWith(
+                            color: ColorName.neutral50,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            RegularElevatedButton(
+              onPressed: () {
+                context.read<PlayerViewModel>().playOrPause();
+              },
+              size: const Size(33, 33),
+              radius: 50,
+              padding: const EdgeInsets.all(8),
+              child: context.read<PlayerViewModel>().isPlaying
+                  ? const Icon(
+                      Icons.pause_rounded,
+                      color: ColorName.white,
+                    )
+                  : const Icon(
+                      Icons.play_arrow_rounded,
+                      color: ColorName.white,
+                    ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
