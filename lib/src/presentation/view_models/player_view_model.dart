@@ -4,18 +4,26 @@ import 'dart:io';
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 
 class PlayerViewModel extends ChangeNotifier {
   final AudioPlayer _player;
   final CacheManager _cm;
+  final Box _box;
 
-  PlayerViewModel(this._player, this._cm) {
+  PlayerViewModel(this._player, this._cm, this._box) {
     _player
         .createPositionStream(
             minPeriod: const Duration(milliseconds: 1000),
             maxPeriod: const Duration(milliseconds: 1000))
         .listen(_positionListener);
+    _player
+        .createPositionStream(
+          minPeriod: const Duration(milliseconds: 5000),
+          maxPeriod: const Duration(milliseconds: 5000),
+        )
+        .listen(_saveLastDurationToCache);
   }
 
   Duration? _currentPosition;
@@ -64,8 +72,9 @@ class PlayerViewModel extends ChangeNotifier {
     }
 
     _book = book;
-    _currentIndex = 0;
-    _setAudioSource(_currentIndex);
+    _currentIndex = _getLastIndexFromCache();
+    final lastDuration = _getLastDurationFromCache();
+    _setAudioSource(_currentIndex, lastDuration);
   }
 
   void _positionListener(Duration? pos) {
@@ -91,6 +100,7 @@ class PlayerViewModel extends ChangeNotifier {
     }
     if (_book!.audioUrls!.length > _currentIndex + 1) {
       _currentIndex++;
+      await _saveLastIndexToCache();
       _setAudioSource(_currentIndex);
     }
   }
@@ -101,6 +111,7 @@ class PlayerViewModel extends ChangeNotifier {
     }
     if (_currentIndex > 0) {
       _currentIndex--;
+      await _saveLastIndexToCache();
       _setAudioSource(_currentIndex);
     }
   }
@@ -116,11 +127,12 @@ class PlayerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeAudio(int index) {
+  void changeAudio(int index) async {
     if (_currentIndex == index) {
       return;
     }
     _currentIndex = index;
+    await _saveLastIndexToCache();
     _setAudioSource(_currentIndex);
   }
 
@@ -137,7 +149,7 @@ class PlayerViewModel extends ChangeNotifier {
     }
   }
 
-  void _setAudioSource(int index) async {
+  void _setAudioSource(int index, [Duration position = Duration.zero]) async {
     await _player.stop();
     _duration = null;
     _currentPosition = null;
@@ -148,8 +160,8 @@ class PlayerViewModel extends ChangeNotifier {
     if (_file == null) {
       return;
     }
-    _duration = await _player.setAudioSource(AudioSource.file(_file!.path));
-    print("audio duration: $duration");
+    _duration = await _player.setAudioSource(AudioSource.file(_file!.path),
+        initialPosition: position);
     _player.play();
   }
 
@@ -177,5 +189,43 @@ class PlayerViewModel extends ChangeNotifier {
       file.complete(null);
     });
     return file.future;
+  }
+
+  Future<void> _saveLastIndexToCache() async {
+    try {
+      final key = "${_book?.id}_index";
+      await _box.put(key, _currentIndex);
+    } catch (e) {
+      print("save last index throw exception: $e");
+    }
+  }
+
+  Future<void> _saveLastDurationToCache(Duration duration) async {
+    try {
+      final key = "${_book?.id}_duration";
+      await _box.put(key, duration.inMilliseconds);
+    } catch (e) {
+      print("save last duration throw exception: $e");
+    }
+  }
+
+  Duration _getLastDurationFromCache() {
+    try {
+      final key = "${_book?.id}_duration";
+      return Duration(milliseconds: _box.get(key) ?? 0);
+    } catch (e) {
+      print("get last duration throw exception: $e");
+      return Duration.zero;
+    }
+  }
+
+  int _getLastIndexFromCache() {
+    try {
+      final key = "${_book?.id}_index";
+      return _box.get(key) ?? 0;
+    } catch (e) {
+      print("get last index throw exception: $e");
+      return 0;
+    }
   }
 }

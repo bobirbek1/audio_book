@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => UserViewModel(getIt.get(), getIt.get())),
       ChangeNotifierProvider(create: (context) => CategoryViewModel(getIt.get(),)),
       ChangeNotifierProvider(create: (context) => BookViewModel(getIt.get(),)),
-      ChangeNotifierProvider(create: (context) => PlayerViewModel(getIt.get(),getIt.get())),
+      ChangeNotifierProvider(create: (context) => PlayerViewModel(getIt.get(),getIt.get(),getIt.get())),
 
     ],
     builder: (context,child) =>  MaterialApp(
