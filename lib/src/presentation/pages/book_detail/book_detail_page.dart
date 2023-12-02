@@ -113,7 +113,12 @@ class BookDetailPage extends StatelessWidget {
                         _ActionButtons(
                           onPlayAudio: () {
                             Navigator.push(
-                                context, generateRoute(Pages.playerPage,argument: vm.bookByIdState.book,),);
+                              context,
+                              generateRoute(
+                                Pages.playerPage,
+                                argument: vm.bookByIdState.book,
+                              ),
+                            );
                           },
                           onReadBook: () {
                             Navigator.push(
@@ -145,8 +150,8 @@ class BookDetailPage extends StatelessWidget {
                                 color: ColorName.neutral60,
                               ),
                         ),
-                        const SizedBox(
-                          height: 32,
+                        SizedBox(
+                          height: 32 + ctx.getSnackbarPadding(),
                         ),
                       ],
                     ),

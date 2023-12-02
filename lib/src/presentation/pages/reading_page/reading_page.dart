@@ -73,12 +73,15 @@ class _ReadingPageState extends State<ReadingPage> {
                 ? const Center(
                     child: CircularProgressIndicator.adaptive(),
                   )
-                : SfPdfViewer.file(
-                    pdfFile!,
-                    controller: pdfCtrl,
-                    pageLayoutMode: PdfPageLayoutMode.single,
-                    scrollDirection: PdfScrollDirection.horizontal,
-                  ),
+                : Padding(
+                  padding: EdgeInsets.only(bottom: context.getSnackbarPadding()),
+                  child: SfPdfViewer.file(
+                      pdfFile!,
+                      controller: pdfCtrl,
+                      pageLayoutMode: PdfPageLayoutMode.single,
+                      scrollDirection: PdfScrollDirection.horizontal,
+                    ),
+                ),
       ),
     );
   }

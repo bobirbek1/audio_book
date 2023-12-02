@@ -1,5 +1,6 @@
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/data/models/category_model/category_model.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
@@ -106,8 +107,8 @@ class SearchPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 32,
+          SizedBox(
+            height: 32 + context.getSnackbarPadding(),
           ),
         ],
       ),

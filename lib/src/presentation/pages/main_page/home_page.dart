@@ -1,4 +1,5 @@
 import 'package:audio_book/gen/colors.gen.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
@@ -76,8 +77,8 @@ class HomePage extends StatelessWidget {
             height: 24,
           ),
           const _TrendingNow(),
-          const SizedBox(
-            height: 48,
+          SizedBox(
+            height: 48 + context.getSnackbarPadding(),
           ),
         ],
       ),

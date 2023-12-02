@@ -1,4 +1,5 @@
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class BooksGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final snackbarPadding = context.getSnackbarPadding();
     return books.isEmpty
         ? const Center(
             child: Text("No books found"),
@@ -30,8 +32,8 @@ class BooksGrid extends StatelessWidget {
             ),
             shrinkWrap: shrinkWrap,
             physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
-            padding: padding ??
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: padding?.copyWith(bottom: padding!.bottom + snackbarPadding) ??
+                EdgeInsets.only(left: 20, top: 16,right: 20,bottom: snackbarPadding + 16),
             itemCount: books.length,
             itemBuilder: (ctx, index) {
               final book = books[index];

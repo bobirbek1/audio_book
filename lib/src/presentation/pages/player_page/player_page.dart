@@ -25,6 +25,7 @@ class PlayerPage extends StatelessWidget {
     vm.initBookAudios(book);
     return PopScope(
       onPopInvoked: (canPop) {
+        vm.isSnackbarActive = true;
         messanger
             .showSnackBar(
               const SnackBar(
@@ -40,6 +41,7 @@ class PlayerPage extends StatelessWidget {
           if (value == SnackBarClosedReason.swipe && vm.isPlaying) {
             vm.playOrPause();
           }
+          vm.isSnackbarActive = false;
         });
       },
       child: Scaffold(
@@ -551,6 +553,9 @@ class _PlayerSnackbar extends StatelessWidget {
               width: 20,
             ),
           ],
+        ),
+        const SizedBox(
+          height: 8,
         ),
       ],
     );

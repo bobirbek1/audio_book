@@ -64,6 +64,13 @@ class PlayerViewModel extends ChangeNotifier {
                   ? "Speed 2.0x"
                   : "Speed 3x";
 
+  bool _isSnackbarActive = false;
+  bool get isSnackbarActive => _isSnackbarActive;
+  set isSnackbarActive(bool value) {
+    _isSnackbarActive = value;
+    notifyListeners();
+  }
+
   BookModel? _book;
   BookModel? get book => _book;
 
@@ -160,6 +167,7 @@ class PlayerViewModel extends ChangeNotifier {
     _currentPosition = null;
     _downloadProgress = 0;
     _file == null;
+    notifyListeners();
     _file = await _getFilefromCache(_book?.audioUrls?[index].url);
 
     if (_file == null) {
