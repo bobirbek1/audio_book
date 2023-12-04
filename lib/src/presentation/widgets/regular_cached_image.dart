@@ -9,7 +9,12 @@ class RegularCachedImage extends StatelessWidget {
   final double? height;
   final bool isSquare;
   const RegularCachedImage(
-      {required this.imageUrl, this.width, this.height, this.fit,this.isSquare = true, super.key});
+      {required this.imageUrl,
+      this.width,
+      this.height,
+      this.fit,
+      this.isSquare = true,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +23,32 @@ class RegularCachedImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
+      errorListener: (e) {},
       errorWidget: (ctx, imageUrl, e) {
-        return isSquare ? Assets.images.imagePlaceholder240x240.image(
-          width: width,
-          height: height,
-          fit: fit,
-        ) : Assets.images.imagePlaceholder400x600.image(
-          width: width,
-          height: height,
-          fit: fit,
-        );
+        return isSquare
+            ? Assets.images.imagePlaceholder240x240.image(
+                width: width,
+                height: height,
+                fit: fit,
+              )
+            : Assets.images.imagePlaceholder400x600.image(
+                width: width,
+                height: height,
+                fit: fit,
+              );
       },
       placeholder: (ctx, imageUrl) {
-        return isSquare ? Assets.images.imagePlaceholder240x240.image(
-          width: width,
-          height: height,
-          fit: fit,
-        ) : Assets.images.imagePlaceholder400x600.image(
-          width: width,
-          height: height,
-          fit: fit,
-        );
+        return isSquare
+            ? Assets.images.imagePlaceholder240x240.image(
+                width: width,
+                height: height,
+                fit: fit,
+              )
+            : Assets.images.imagePlaceholder400x600.image(
+                width: width,
+                height: height,
+                fit: fit,
+              );
       },
     );
   }

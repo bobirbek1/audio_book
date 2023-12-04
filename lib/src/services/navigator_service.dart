@@ -4,6 +4,7 @@ import 'package:audio_book/src/presentation/pages/books_list_pages/books_by_cate
 import 'package:audio_book/src/presentation/pages/books_list_pages/latest_books_page.dart';
 import 'package:audio_book/src/presentation/pages/books_list_pages/recommended_books_page.dart';
 import 'package:audio_book/src/presentation/pages/books_list_pages/trending_books_page.dart';
+import 'package:audio_book/src/presentation/pages/comments_page/comments_page.dart';
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_email.dart';
 import 'package:audio_book/src/presentation/pages/forget_password/forget_password_finish.dart';
 import 'package:audio_book/src/presentation/pages/main_page/main_page.dart';
@@ -33,7 +34,7 @@ enum Pages {
   booksByCategoryPage,
   bookDetailPage,
   readingPage,
-  playerPage,
+  playerPage, commentsPage,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -119,6 +120,11 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return const PlayerPage();
+      });
+    case Pages.commentsPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const CommentsPage();
       });
     default:
       return _buildMaterialRoute(
