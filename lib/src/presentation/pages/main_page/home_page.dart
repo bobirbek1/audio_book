@@ -4,6 +4,7 @@ import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
+import 'package:audio_book/src/presentation/widgets/add_comment.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/category_item.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
@@ -18,6 +19,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timestamp) {
+      showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: ColorName.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              32,
+            ),
+          ),
+          builder: (ctx) {
+            return const AddComment();
+          });
+    });
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -184,17 +199,14 @@ class _BestSellerBooks extends StatelessWidget {
                             image: book.photo,
                             rating: book.rating,
                             listenersCount: book.listeners,
-                            onPressed: (){
-                               Navigator.push(
-                                  context,
-                                  generateRoute(
-                                    Pages.bookDetailPage,
-                                    argument: {
-                                      "id": book.id,
-                                      "name": book.name
-                                    },
-                                  ),
-                                );
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                generateRoute(
+                                  Pages.bookDetailPage,
+                                  argument: {"id": book.id, "name": book.name},
+                                ),
+                              );
                             },
                           ),
                         )
@@ -241,8 +253,8 @@ class _LatestBooks extends StatelessWidget {
                               imageUrl: book.photo,
                               width: 160,
                               height: 220,
-                              onPressed: (){
-                                 Navigator.push(
+                              onPressed: () {
+                                Navigator.push(
                                   context,
                                   generateRoute(
                                     Pages.bookDetailPage,
@@ -300,8 +312,8 @@ class _TrendingNow extends StatelessWidget {
                               imageUrl: book.photo,
                               width: 160,
                               height: 220,
-                              onPressed: (){
-                                 Navigator.push(
+                              onPressed: () {
+                                Navigator.push(
                                   context,
                                   generateRoute(
                                     Pages.bookDetailPage,

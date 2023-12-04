@@ -96,6 +96,12 @@ class ThemeProvider extends ChangeNotifier {
         enabledThumbRadius: 8,
       ),
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: ColorName.white,
+      modalBackgroundColor:  ColorName.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32,),),
+      surfaceTintColor: ColorName.white
+    )
   );
 
   final _dark = ThemeData(

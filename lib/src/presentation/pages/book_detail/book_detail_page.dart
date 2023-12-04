@@ -5,6 +5,7 @@ import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/comment_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/comment_item.dart';
 import 'package:audio_book/src/presentation/widgets/page_indicator.dart';
 import 'package:audio_book/src/presentation/widgets/rating_bar.dart';
@@ -16,14 +17,33 @@ import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BookDetailPage extends StatelessWidget {
+class BookDetailPage extends StatefulWidget {
   const BookDetailPage({super.key});
 
   @override
+  State<BookDetailPage> createState() => _BookDetailPageState();
+}
+
+class _BookDetailPageState extends State<BookDetailPage> {
+  Map<String, dynamic>? args;
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      context.read<BookViewModel>().fetchBookById(args?["id"] ?? "");
+      context.read<CommentViewModel>().incrementCount(args?["id"] ?? "");
+    });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    args ??= context.getArguments<Map<String, dynamic>?>();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final args = context.getArguments<Map<String, dynamic>?>();
-    Future.microtask(
-        () => context.read<BookViewModel>().fetchBookById(args?["id"] ?? ""));
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -211,7 +231,11 @@ class _Comments extends StatelessWidget {
             ),
             RegularTextButton(
               onPressed: () {
-                Navigator.push(context, generateRoute(Pages.commentsPage,));
+                Navigator.push(
+                    context,
+                    generateRoute(
+                      Pages.commentsPage,
+                    ));
               },
               textStyle: Theme.of(context).textStyles.medium14.copyWith(
                     color: ColorName.accent50,

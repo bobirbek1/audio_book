@@ -150,7 +150,7 @@ class PlayerPage extends StatelessWidget {
 }
 
 class _BottomControlBar extends StatelessWidget {
-  const _BottomControlBar({super.key});
+  const _BottomControlBar();
 
   @override
   Widget build(BuildContext context) {

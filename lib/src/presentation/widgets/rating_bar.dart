@@ -5,7 +5,13 @@ class RatingBar extends StatefulWidget {
   final double rating;
   final void Function(int rating)? onRating;
   final double? size;
-  const RatingBar({required this.rating, this.size, this.onRating, super.key});
+  final EdgeInsets? padding;
+  const RatingBar(
+      {required this.rating,
+      this.size,
+      this.onRating,
+      this.padding,
+      super.key});
 
   @override
   State<RatingBar> createState() => _RatingBarState();
@@ -36,12 +42,14 @@ class _RatingBarState extends State<RatingBar> {
                   }
                 : null,
             iconSize: widget.size ?? 24,
-            padding: EdgeInsets.zero,
+            padding: widget.padding ?? EdgeInsets.zero,
             constraints: BoxConstraints(
                 minWidth: widget.size ?? 24, minHeight: widget.size ?? 24),
             icon: index < _rating
-                ? Assets.icons.starFilled.svg()
-                : Assets.icons.starOutlined.svg(),
+                ? Assets.icons.starFilled
+                    .svg(width: widget.size, height: widget.size)
+                : Assets.icons.starOutlined
+                    .svg(width: widget.size, height: widget.size),
           ),
         ),
       ),
