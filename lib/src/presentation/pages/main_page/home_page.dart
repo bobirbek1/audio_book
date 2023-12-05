@@ -4,6 +4,8 @@ import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:audio_book/src/presentation/view_models/book_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/category_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/comment_view_model.dart';
+import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/add_comment.dart';
 import 'package:audio_book/src/presentation/widgets/book_item.dart';
 import 'package:audio_book/src/presentation/widgets/category_item.dart';
@@ -14,25 +16,43 @@ import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timestamp) {
-      showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: ColorName.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              32,
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    Future.microtask(() async {
+      final user = context.read<UserViewModel>().user;
+      final shouldComment = await context
+          .read<CommentViewModel>()
+          .shouldUserComment(user?.uid ?? "");
+      if (shouldComment && context.mounted) {
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: ColorName.white,
+            isDismissible: false,
+            enableDrag: false,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                32,
+              ),
             ),
-          ),
-          builder: (ctx) {
-            return const AddComment();
-          });
+            builder: (ctx) {
+              return const AddComment();
+            });
+      }
     });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [

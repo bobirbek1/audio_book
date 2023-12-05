@@ -65,7 +65,7 @@ class ThemeProvider extends ChangeNotifier {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
-        )),
+        ),),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: ColorName.white,
       elevation: 8,
