@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CommentItem extends StatelessWidget {
-  final String? userPhoto;
+  final String? userImage;
   final String? userName;
-  final double? rating;
+  final int? rating;
   final String? createAt;
   final String? comment;
   final int? maxLine;
 
   const CommentItem(
-      {this.userPhoto,
+      {this.userImage,
       this.userName,
       this.rating,
       this.createAt,
@@ -32,7 +32,7 @@ class CommentItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: RegularCachedImage(
-                imageUrl: userPhoto,
+                imageUrl: userImage,
                 width: 48,
                 height: 48,
                 fit: BoxFit.cover,
@@ -60,7 +60,7 @@ class CommentItem extends StatelessWidget {
                           width: 96,
                           height: 24,
                           child: RatingBar(
-                            rating: rating!,
+                            rating: rating!.toDouble(),
                             size: 16,
                           ),
                         ),

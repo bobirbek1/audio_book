@@ -146,10 +146,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                             context,
                             generateRoute(
                               Pages.readingPage,
-                              argument: {
-                                "name": vm.bookByIdState.book?.name,
-                                "file_url": vm.bookByIdState.book?.fileUrl,
-                              },
+                              argument: vm.bookByIdState.book,
                             ),
                           );
                         },
@@ -174,7 +171,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       const SizedBox(
                         height: 32,
                       ),
-                      _Comments(),
+                      _Comments(
+                        bookId: args?["id"] ?? "",
+                      ),
                       SizedBox(
                         height: 32 + ctx.getSnackbarPadding(),
                       ),
@@ -190,63 +189,87 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 }
 
-class _Comments extends StatelessWidget {
-  _Comments();
+class _Comments extends StatefulWidget {
+  final String bookId;
+  const _Comments({required this.bookId});
 
+  @override
+  State<_Comments> createState() => _CommentsState();
+}
+
+class _CommentsState extends State<_Comments> {
   final PageController _controller = PageController();
 
   @override
+  void initState() {
+    Future.microtask(() {
+      if (context.mounted) {
+        context.read<CommentViewModel>().fetchComments(widget.bookId, 3);
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Review",
-          style: Theme.of(context).textStyles.semiBold14,
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        SizedBox(
-          height: 156,
-          child: PageView(
-            controller: _controller,
-            children: List.generate(
-              3,
-              (index) => CommentItem(
-                rating: 4,
-                comment:
-                    "Some comment and not the end...\n some comment next line\n and also next line\nalso next line\nalso next line",
-                createAt: DateTime(2023, 12, 2).toString(),
-                maxLine: 4,
+    final state = context.watch<CommentViewModel>().state;
+    return switch (state.state) {
+      BaseState.loaded => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Review",
+              style: Theme.of(context).textStyles.semiBold14,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+              height: 156,
+              child: PageView(
+                controller: _controller,
+                children: state.comments
+                        ?.map(
+                          (comment) => CommentItem(
+                            rating: comment.rating,
+                            comment: comment.comment,
+                            createAt: comment.createdAt,
+                            userName: comment.userName,
+                            userImage: comment.userImage,
+                            maxLine: 4,
+                          ),
+                        )
+                        .toList() ??
+                    [],
               ),
             ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PageIndicator(
-              controller: _controller,
-            ),
-            RegularTextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    generateRoute(
-                      Pages.commentsPage,
-                    ));
-              },
-              textStyle: Theme.of(context).textStyles.medium14.copyWith(
-                    color: ColorName.accent50,
-                  ),
-              size: const Size(10, 10),
-              text: "View More",
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                PageIndicator(
+                  controller: _controller,
+                ),
+                RegularTextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        generateRoute(
+                          Pages.commentsPage,
+                          argument: widget.bookId,
+                        ));
+                  },
+                  textStyle: Theme.of(context).textStyles.medium14.copyWith(
+                        color: ColorName.accent50,
+                      ),
+                  size: const Size(10, 10),
+                  text: "View More",
+                ),
+              ],
             ),
           ],
         ),
-      ],
-    );
+      _ => const SizedBox(),
+    };
   }
 }
 

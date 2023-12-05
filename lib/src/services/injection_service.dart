@@ -19,11 +19,13 @@ Future<void> setUp() async {
       apiKey: Constants.algoliaApiKey);
 
   final searchBox = await Hive.openBox<BookModel>("latest_search_books");
+  final libraryBooks = await Hive.openBox<BookModel>("library_books");
   final defaultBox = await Hive.openBox("default_box");
 
   getIt.registerSingleton(algolia.instance);
   getIt.registerSingleton(searchBox);
   getIt.registerSingleton(defaultBox);
+  getIt.registerSingleton(libraryBooks,instanceName: "library_books");
   getIt.registerSingleton<SharedPreferences>(prefs);
   getIt.registerSingleton<CacheManager>(DefaultCacheManager());
 

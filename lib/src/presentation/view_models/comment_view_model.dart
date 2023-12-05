@@ -1,4 +1,6 @@
 import 'package:audio_book/src/constants/constants.dart';
+import 'package:audio_book/src/data/models/comment_model/comment_model.dart';
+import 'package:audio_book/src/presentation/view_models/base_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,6 +21,36 @@ class CommentViewModel extends ChangeNotifier {
 
   final _commentController = TextEditingController();
   TextEditingController get commentController => _commentController;
+
+  CommentState _state = CommentState(state: BaseState.initial);
+
+  CommentState get state => _state;
+
+  void fetchComments(String bookId, [int? limit]) async {
+    if (bookId.isEmpty) return;
+    try {
+      _state = CommentState(state: BaseState.loading);
+      notifyListeners();
+      var query =
+          _db.collection("books/$bookId/comments").orderBy("created_at");
+      if (limit != null) {
+        query = query.limit(limit);
+      }
+      final result = await query.get();
+      final comments = <CommentModel>[];
+      for (var doc in result.docs) {
+        comments.add(CommentModel.fromJson(doc.data()));
+      }
+      _state = CommentState(state: BaseState.loaded, comments: comments);
+    } catch (e) {
+      print("Exception occured while fetching comments: $e");
+      _state = CommentState(
+          state: BaseState.error,
+          error: "Exception occured while fetching comments!");
+    } finally {
+      notifyListeners();
+    }
+  }
 
   Future<bool> shouldUserComment(String userId) async {
     if (userId.isEmpty) return false;
@@ -55,6 +87,7 @@ class CommentViewModel extends ChangeNotifier {
         "rating": rating,
         "user_image": userImage,
         "user_name": userName,
+        "created_at": DateTime.now().toLocal(),
       };
 
       final col = _db.collection("books/$bookId/comments");
@@ -109,4 +142,15 @@ class CommentViewModel extends ChangeNotifier {
       print("exception occured while increment count: $e");
     }
   }
+}
+
+class CommentState {
+  final BaseState state;
+  final List<CommentModel>? comments;
+  final String? error;
+  CommentState({
+    required this.state,
+    this.comments,
+    this.error,
+  });
 }

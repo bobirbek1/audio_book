@@ -3,6 +3,7 @@ import 'package:audio_book/gen/colors.gen.dart';
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/library_view_model.dart';
 import 'package:audio_book/src/presentation/view_models/player_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_elevated_button.dart';
@@ -19,30 +20,33 @@ class PlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final book = context.getArguments<BookModel?>();
+    context.read<LibraryViewModel>().addBookToLibrary(book);
     final vm = context.read<PlayerViewModel>();
     final messanger = ScaffoldMessenger.of(context);
     messanger.clearSnackBars();
     vm.initBookAudios(book);
     return PopScope(
       onPopInvoked: (canPop) {
-        vm.isSnackbarActive = true;
-        messanger
-            .showSnackBar(
-              const SnackBar(
-                content: _PlayerSnackbar(),
-                backgroundColor: Colors.white,
-                duration: Duration(days: 1),
-                elevation: 6,
-                padding: EdgeInsets.zero,
-              ),
-            )
-            .closed
-            .then((value) {
-          if (value == SnackBarClosedReason.swipe && vm.isPlaying) {
-            vm.playOrPause();
-          }
-          vm.isSnackbarActive = false;
-        });
+        if (vm.isPlaying) {
+          vm.isSnackbarActive = true;
+          messanger
+              .showSnackBar(
+                const SnackBar(
+                  content: _PlayerSnackbar(),
+                  backgroundColor: Colors.white,
+                  duration: Duration(days: 1),
+                  elevation: 6,
+                  padding: EdgeInsets.zero,
+                ),
+              )
+              .closed
+              .then((value) {
+            if (value == SnackBarClosedReason.swipe && vm.isPlaying) {
+              vm.playOrPause();
+            }
+            vm.isSnackbarActive = false;
+          });
+        }
       },
       child: Scaffold(
         appBar: AppBar(
