@@ -41,6 +41,13 @@ class UserViewModel extends ChangeNotifier {
 
   UserModel? get user => _user;
 
+  String? _currentPickedImage;
+  String? get currentPickedImage => _currentPickedImage;
+  set currentPickedImage(String? value) {
+    _currentPickedImage = value;
+    notifyListeners();
+  }
+
   void initTextControllers() {
     print("user information: $user");
     _nameCtrl.text = user?.fullName ?? "";

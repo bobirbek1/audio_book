@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
 import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -53,19 +56,30 @@ class ProfilePage extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: RegularCachedImage(
-                    imageUrl: vm.user?.photo,
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.cover,
-                    isSquare: true,
-                  ),
+                  child: vm.currentPickedImage == null
+                      ? RegularCachedImage(
+                          imageUrl: vm.user?.photo,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                          isSquare: true,
+                        )
+                      : Image.file(
+                          File(vm.currentPickedImage!),
+                          fit: BoxFit.cover,
+                          width: 160,
+                          height: 160,
+                        ),
                 ),
                 Positioned(
                   top: 0,
                   right: 0,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final pickedImage = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      vm.currentPickedImage = pickedImage?.path;
+                    },
                     iconSize: 24,
                     icon: Assets.icons.edit.svg(
                       width: 20,
