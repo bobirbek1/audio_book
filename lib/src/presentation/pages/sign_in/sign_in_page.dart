@@ -141,7 +141,9 @@ class _LoginButton extends StatelessWidget {
     }
 
     if (signInVM.state.user != null) {
-      context.read<UserViewModel>().getUser(signInVM.state.user!.uid);
+      context.read<UserViewModel>().getUser(signInVM.state.user!.uid).then((value) {
+        Navigator.pushAndRemoveUntil(context, generateRoute(Pages.mainPage),(route) => false);
+      });
     }
 
     return switch (signInVM.state.state) {
@@ -193,6 +195,7 @@ class _SocialMediaButton extends StatelessWidget {
           );
           userVM.saveUser(userModel);
         }
+        Navigator.pushAndRemoveUntil(context, generateRoute(Pages.mainPage),(route) => false);
       });
     }
 

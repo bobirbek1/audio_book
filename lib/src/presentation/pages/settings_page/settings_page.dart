@@ -1,10 +1,13 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/gen/colors.gen.dart';
+import 'package:audio_book/src/helpers/extensions.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_outline_button.dart';
 import 'package:audio_book/src/services/navigator_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -51,7 +54,7 @@ class SettingsPage extends StatelessWidget {
             thickness: 28,
             height: 28,
           ),
-          _SettingItem(
+          const _SettingItem(
             title: "Notifications",
           ),
           const Divider(),
@@ -75,7 +78,18 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: RegularOutlineButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<UserViewModel>().logOut().then((value) {
+                  if (value) {
+                    Navigator.pushAndRemoveUntil(
+                        context, generateRoute(Pages.signIn), (route) => false);
+                  } else {
+                    if (context.mounted) {
+                      context.showSnackBar("User log out unsuccessfully. Please try again!");
+                    }
+                  }
+                });
+              },
               text: "Log out",
               foregroundColor: ColorName.accent50,
               borderColor: ColorName.accent50,
@@ -115,6 +129,7 @@ class _ProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<UserViewModel>();
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -129,8 +144,8 @@ class _ProfileItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: const RegularCachedImage(
-              imageUrl: "",
+            child: RegularCachedImage(
+              imageUrl: vm.user?.photo,
               width: 72,
               height: 72,
               fit: BoxFit.cover,
@@ -145,7 +160,7 @@ class _ProfileItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Jhon Doe",
+                  vm.user?.fullName ?? "Unknown",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textStyles.medium16,

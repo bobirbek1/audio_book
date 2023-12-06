@@ -15,17 +15,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => ThemeProvider()),
-      ChangeNotifierProvider(create: (context) => UserViewModel(getIt.get(), getIt.get(),getIt.get())),
-      ChangeNotifierProvider(create: (context) => CategoryViewModel(getIt.get(),)),
-      ChangeNotifierProvider(create: (context) => BookViewModel(getIt.get(),)),
-      ChangeNotifierProvider(create: (context) => PlayerViewModel(getIt.get(),getIt.get(),getIt.get())),
-      ChangeNotifierProvider(create: (context) => CommentViewModel(getIt.get(),getIt.get())),
-      ChangeNotifierProvider(create: (context) => LibraryViewModel(getIt.get(instanceName: "library_books"))),
-
-    ],
-    builder: (context,child) =>  MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(
+            create: (context) => UserViewModel(
+                getIt.get(),
+                getIt.get(),
+                getIt.get(),
+                getIt.get(),
+                getIt.get(),
+                getIt.get(),
+                getIt.get(instanceName: "library_books"))),
+        ChangeNotifierProvider(
+            create: (context) => CategoryViewModel(
+                  getIt.get(),
+                )),
+        ChangeNotifierProvider(
+            create: (context) => BookViewModel(
+                  getIt.get(),
+                )),
+        ChangeNotifierProvider(
+            create: (context) =>
+                PlayerViewModel(getIt.get(), getIt.get(), getIt.get())),
+        ChangeNotifierProvider(
+            create: (context) => CommentViewModel(getIt.get(), getIt.get())),
+        ChangeNotifierProvider(
+            create: (context) =>
+                LibraryViewModel(getIt.get(instanceName: "library_books"))),
+      ],
+      builder: (context, child) => MaterialApp(
         title: "Audio book",
         theme: context.watch<ThemeProvider>().current,
         home: const SplashPage(),

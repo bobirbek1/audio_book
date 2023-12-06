@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:audio_book/src/data/models/user_model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +18,16 @@ class UserViewModel extends ChangeNotifier {
 
   final FirebaseStorage _storage;
 
-  UserViewModel(this._db, this._prefs, this._storage);
+  final FirebaseAuth _auth;
+
+  final Box _box;
+
+  final Box<BookModel> _latestSearchBox;
+
+  final Box<BookModel> _libraryBox;
+
+  UserViewModel(this._db, this._prefs, this._storage, this._auth, this._box,
+      this._latestSearchBox, this._libraryBox);
 
   Future<void> init() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -67,7 +78,24 @@ class UserViewModel extends ChangeNotifier {
     _nameCtrl.text = user?.fullName ?? "";
     _emailCtrl.text = user?.email ?? "";
     _phoneCtrl.text = user?.phone ?? "";
-    _birthDateCtrl.text = user?.birthDate ?? "";
+    if (user?.birthDate != null) {
+      final date = DateTime.parse(user!.birthDate!);
+      _birthDateCtrl.text = DateFormat("dd.MM.yyyy").format(date);
+    }
+  }
+
+  Future<bool> logOut() async {
+    try {
+      await _auth.signOut();
+      _user = null;
+      _box.clear();
+      _latestSearchBox.clear();
+      _libraryBox.clear();
+      return true;
+    } catch (e) {
+      print("exception occured while signing out: $e");
+      return false;
+    }
   }
 
   Future<void> updateUser() async {
