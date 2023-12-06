@@ -1,14 +1,18 @@
 import 'package:audio_book/gen/assets.gen.dart';
 import 'package:audio_book/src/presentation/base/theme_provider.dart';
+import 'package:audio_book/src/presentation/view_models/user_view_model.dart';
 import 'package:audio_book/src/presentation/widgets/regular_cached_image.dart';
 import 'package:audio_book/src/presentation/widgets/regular_text_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<UserViewModel>();
+    vm.initTextControllers();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -49,8 +53,8 @@ class ProfilePage extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: const RegularCachedImage(
-                    imageUrl: "",
+                  child: RegularCachedImage(
+                    imageUrl: vm.user?.photo,
                     width: 160,
                     height: 160,
                     fit: BoxFit.cover,
@@ -77,26 +81,26 @@ class ProfilePage extends StatelessWidget {
             const Divider(),
             _ProfileItem(
               title: "Full name",
-              controller: TextEditingController(text: "John Doe"),
+              controller: vm.nameCtrl,
             ),
             const Divider(),
             _ProfileItem(
               title: "Email",
-              controller: TextEditingController(text: "john@mail.com"),
+              controller: vm.emailCtrl,
               enable: false,
             ),
             const Divider(),
             _ProfileItem(
               title: "Phone",
               hint: "+998xxxxxxxxx",
-              controller: TextEditingController(),
+              controller: vm.phoneCtrl,
             ),
             const Divider(),
             _ProfileItem(
               title: "Date Birth",
               hint: "Birth Date",
               readOnly: true,
-              controller: TextEditingController(text: "01 January 2001"),
+              controller: vm.birthDateCtrl,
             ),
             const Divider(),
           ],
@@ -129,6 +133,7 @@ class _ProfileItem extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
+            flex: 2,
             child: Text(
               title,
               style: Theme.of(context).textStyles.medium14,
@@ -138,6 +143,7 @@ class _ProfileItem extends StatelessWidget {
             width: 8,
           ),
           Expanded(
+            flex: 3,
             child: TextField(
               controller: controller,
               enabled: enable,

@@ -18,6 +18,15 @@ class UserViewModel extends ChangeNotifier {
         true;
   }
 
+  final _nameCtrl = TextEditingController();
+  TextEditingController get nameCtrl => _nameCtrl;
+  final _emailCtrl = TextEditingController();
+  TextEditingController get emailCtrl => _emailCtrl;
+  final _phoneCtrl = TextEditingController();
+  TextEditingController get phoneCtrl => _phoneCtrl;
+  final _birthDateCtrl = TextEditingController();
+  TextEditingController get birthDateCtrl => _birthDateCtrl;
+
   final FirebaseFirestore _db;
 
   final SharedPreferences _prefs;
@@ -31,6 +40,14 @@ class UserViewModel extends ChangeNotifier {
   UserModel? _user;
 
   UserModel? get user => _user;
+
+  void initTextControllers() {
+    print("user information: $user");
+    _nameCtrl.text = user?.fullName ?? "";
+    _emailCtrl.text = user?.email ?? "";
+    _phoneCtrl.text = user?.phone ?? "";
+    _birthDateCtrl.text = user?.birthDate ?? "";
+  }
 
   void saveUser(UserModel user) async {
     try {
