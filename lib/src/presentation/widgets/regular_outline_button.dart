@@ -55,7 +55,7 @@ class RegularOutlineButton extends StatelessWidget {
             text ?? "",
             style: textStyle ??
                 Theme.of(context).textStyles.medium16.copyWith(
-                      color: ColorName.primary50,
+                      color: foregroundColor ?? ColorName.primary50,
                     ),
           ),
     );

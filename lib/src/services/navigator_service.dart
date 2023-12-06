@@ -10,6 +10,8 @@ import 'package:audio_book/src/presentation/pages/forget_password/forget_passwor
 import 'package:audio_book/src/presentation/pages/main_page/main_page.dart';
 import 'package:audio_book/src/presentation/pages/on_boarding/on_boarding_page.dart';
 import 'package:audio_book/src/presentation/pages/player_page/player_page.dart';
+import 'package:audio_book/src/presentation/pages/settings_page/profile_page.dart';
+import 'package:audio_book/src/presentation/pages/settings_page/settings_page.dart';
 import 'package:audio_book/src/presentation/pages/reading_page/reading_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:audio_book/src/presentation/pages/sign_up/sign_up_page.dart';
@@ -34,7 +36,9 @@ enum Pages {
   booksByCategoryPage,
   bookDetailPage,
   readingPage,
-  playerPage, commentsPage,
+  playerPage,
+  commentsPage,
+  settingsPage, profilePage,
 }
 
 Route generateRoute(Pages page, {Object? argument}) {
@@ -114,7 +118,7 @@ Route generateRoute(Pages page, {Object? argument}) {
     case Pages.readingPage:
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
-        return ReadingPage(dcm: getIt.get(),box: getIt.get());
+        return ReadingPage(dcm: getIt.get(), box: getIt.get());
       });
     case Pages.playerPage:
       return _buildMaterialRoute(
@@ -125,6 +129,16 @@ Route generateRoute(Pages page, {Object? argument}) {
       return _buildMaterialRoute(
           RouteSettings(name: page.name, arguments: argument), (context) {
         return const CommentsPage();
+      });
+    case Pages.settingsPage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const SettingsPage();
+      });
+    case Pages.profilePage:
+      return _buildMaterialRoute(
+          RouteSettings(name: page.name, arguments: argument), (context) {
+        return const ProfilePage();
       });
     default:
       return _buildMaterialRoute(

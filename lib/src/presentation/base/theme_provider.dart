@@ -101,6 +101,11 @@ class ThemeProvider extends ChangeNotifier {
       modalBackgroundColor:  ColorName.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32,),),
       surfaceTintColor: ColorName.white
+    ),
+    dividerTheme: const DividerThemeData(
+      color: ColorName.neutral5,
+      space: 1,
+      thickness: 1,
     )
   );
 
