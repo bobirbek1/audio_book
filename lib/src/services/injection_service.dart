@@ -3,6 +3,7 @@ import 'package:audio_book/src/constants/constants.dart';
 import 'package:audio_book/src/data/models/book_model/book_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -31,6 +32,7 @@ Future<void> setUp() async {
 
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+  getIt.registerSingleton<FirebaseStorage>(FirebaseStorage.instance);
 
   getIt.registerSingleton(AudioPlayer());
 

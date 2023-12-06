@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => ThemeProvider()),
-      ChangeNotifierProvider(create: (context) => UserViewModel(getIt.get(), getIt.get())),
+      ChangeNotifierProvider(create: (context) => UserViewModel(getIt.get(), getIt.get(),getIt.get())),
       ChangeNotifierProvider(create: (context) => CategoryViewModel(getIt.get(),)),
       ChangeNotifierProvider(create: (context) => BookViewModel(getIt.get(),)),
       ChangeNotifierProvider(create: (context) => PlayerViewModel(getIt.get(),getIt.get(),getIt.get())),

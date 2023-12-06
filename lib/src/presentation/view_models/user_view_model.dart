@@ -1,11 +1,22 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:audio_book/src/data/models/user_model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserViewModel extends ChangeNotifier {
-  UserViewModel(this._db, this._prefs);
+  final FirebaseFirestore _db;
+
+  final SharedPreferences _prefs;
+
+  final FirebaseStorage _storage;
+
+  UserViewModel(this._db, this._prefs, this._storage);
 
   Future<void> init() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -27,10 +38,6 @@ class UserViewModel extends ChangeNotifier {
   final _birthDateCtrl = TextEditingController();
   TextEditingController get birthDateCtrl => _birthDateCtrl;
 
-  final FirebaseFirestore _db;
-
-  final SharedPreferences _prefs;
-
   bool _isFirstOpen = true;
 
   bool get isFirstOpen => _isFirstOpen;
@@ -48,12 +55,58 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  DateTime? _pickedDate;
+  DateTime? get pickedDate => _pickedDate;
+  set pickedDate(DateTime? value) {
+    if (value == null) return;
+    _pickedDate = value;
+    _birthDateCtrl.text = DateFormat("dd.MM.yyyy").format(value);
+  }
+
   void initTextControllers() {
-    print("user information: $user");
     _nameCtrl.text = user?.fullName ?? "";
     _emailCtrl.text = user?.email ?? "";
     _phoneCtrl.text = user?.phone ?? "";
     _birthDateCtrl.text = user?.birthDate ?? "";
+  }
+
+  Future<void> updateUser() async {
+    try {
+      var newUser = UserModel(
+        uid: user?.uid,
+        fullName: _nameCtrl.text.isEmpty ? user?.fullName : _nameCtrl.text,
+        birthDate:
+            pickedDate != null ? pickedDate!.toString() : user?.birthDate,
+        email: user?.email,
+        phone: _phoneCtrl.text.isEmpty ? user?.phone : _phoneCtrl.text,
+        photo: user?.photo,
+      );
+      final imageComleter = Completer();
+      if (currentPickedImage != null) {
+        final fileName = currentPickedImage!.split("/").last;
+        final ref = _storage.ref().child("user/${user?.uid}/$fileName");
+        ref
+            .putFile(
+          File(
+            currentPickedImage!,
+          ),
+        )
+            .whenComplete(() async {
+          newUser = newUser.copyWith(photo: await ref.getDownloadURL());
+          imageComleter.complete();
+        });
+      } else {
+        imageComleter.complete();
+      }
+      await imageComleter.future;
+      final doc = _db.doc("users/${user?.uid}");
+      await doc.update(newUser.toJson());
+      _user = newUser;
+    } catch (e) {
+      print("exception occured while updating user data: $e");
+    } finally {
+      notifyListeners();
+    }
   }
 
   void saveUser(UserModel user) async {
@@ -82,5 +135,10 @@ class UserViewModel extends ChangeNotifier {
 
   Future<void> makeUserNotFirst() async {
     await _prefs.setBool("is_first_open", false);
+  }
+
+  void removeChanges() {
+    _currentPickedImage = null;
+    _pickedDate = null;
   }
 }
