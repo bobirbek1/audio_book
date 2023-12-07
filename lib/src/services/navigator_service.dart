@@ -20,6 +20,7 @@ import 'package:audio_book/src/presentation/view_models/sign_in_view_model.dart'
 import 'package:audio_book/src/presentation/view_models/sign_up_view_model.dart';
 import 'package:audio_book/src/services/injection_service.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 enum Pages {
@@ -38,119 +39,155 @@ enum Pages {
   readingPage,
   playerPage,
   commentsPage,
-  settingsPage, profilePage,
+  settingsPage,
+  profilePage,
 }
 
-Route generateRoute(Pages page, {Object? argument}) {
+Route generateRoute(Pages page,
+    {Object? argument}) {
   switch (page) {
     case Pages.onBoarding:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const OnBoardingPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const OnBoardingPage();
+        },
+      );
     case Pages.signIn:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return ChangeNotifierProvider(
-          create: (context) => SignInViewModel(getIt.get(), getIt.get()),
-          builder: (context, child) => child!,
-          child: const SignInPage(),
-        );
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return ChangeNotifierProvider(
+            create: (context) => SignInViewModel(getIt.get(), getIt.get()),
+            builder: (context, child) => child!,
+            child: const SignInPage(),
+          );
+        },
+      );
     case Pages.signUp:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return ChangeNotifierProvider(
-          create: (context) => SignUpViewModel(getIt.get()),
-          builder: (context, child) => child!,
-          child: const SignUpPage(),
-        );
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return ChangeNotifierProvider(
+            create: (context) => SignUpViewModel(getIt.get()),
+            builder: (context, child) => child!,
+            child: const SignUpPage(),
+          );
+        },
+      );
     case Pages.forgetPasswordEmail:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return ChangeNotifierProvider(
-          create: (context) => ForgetPasswordViewModel(getIt.get()),
-          builder: (context, child) => child!,
-          child: const ForgetPasswordEmail(),
-        );
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return ChangeNotifierProvider(
+            create: (context) => ForgetPasswordViewModel(getIt.get()),
+            builder: (context, child) => child!,
+            child: const ForgetPasswordEmail(),
+          );
+        },
+      );
     case Pages.forgetPasswordFinish:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const ForgetPasswordFinish();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const ForgetPasswordFinish();
+        },
+      );
     case Pages.mainPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const MainPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const MainPage();
+        },
+      );
     case Pages.recommendedBooksPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const RecommendedBooksPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const RecommendedBooksPage();
+        },
+      );
     case Pages.bestSellerBooksPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const BestSellerBooksPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const BestSellerBooksPage();
+        },
+      );
     case Pages.latestBooksPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const LatestBooksPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const LatestBooksPage();
+        },
+      );
     case Pages.trendingBooksPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const TrendingBooksPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const TrendingBooksPage();
+        },
+      );
     case Pages.booksByCategoryPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const BooksByCategoryPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const BooksByCategoryPage();
+        },
+      );
     case Pages.bookDetailPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const BookDetailPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const BookDetailPage();
+        },
+      );
     case Pages.readingPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return ReadingPage(dcm: getIt.get(), box: getIt.get());
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return ReadingPage(dcm: getIt.get(), box: getIt.get());
+        },
+      );
     case Pages.playerPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const PlayerPage();
-      });
+      return _buildPageTransition(
+              RouteSettings(name: page.name, arguments: argument),
+              PageTransitionType.bottomToTop,
+              const PlayerPage());
     case Pages.commentsPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const CommentsPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const CommentsPage();
+        },
+      );
     case Pages.settingsPage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
-        return const SettingsPage();
-      });
+      return _buildRoute(
+        RouteSettings(name: page.name, arguments: argument),
+        (context) {
+          return const SettingsPage();
+        },
+      );
     case Pages.profilePage:
-      return _buildMaterialRoute(
-          RouteSettings(name: page.name, arguments: argument), (context) {
+      return _buildRoute(RouteSettings(name: page.name, arguments: argument),
+          (context) {
         return const ProfilePage();
       });
     default:
-      return _buildMaterialRoute(
-          RouteSettings(name: "unKnown", arguments: argument), (context) {
+      return _buildRoute(RouteSettings(name: "unKnown", arguments: argument),
+          (context) {
         return Container();
       });
   }
 }
 
-Route _buildMaterialRoute(
-  RouteSettings routeSettings,
-  Widget Function(BuildContext) builder,
-) {
+Route _buildPageTransition(
+    RouteSettings setting, PageTransitionType type, Widget child) {
+  return PageTransition(
+      child: child, type: type, curve: Curves.ease, settings: setting);
+}
+
+Route _buildRoute(
+    RouteSettings routeSettings, Widget Function(BuildContext) builder) {
   return MaterialPageRoute(builder: builder, settings: routeSettings);
 }
